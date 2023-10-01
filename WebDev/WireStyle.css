@@ -1,0 +1,247 @@
+* {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255, 187, 92);
+}
+
+.mainleftbox {
+    position: absolute;
+    width: 300px;
+    height: 600px;
+    background-color: rgb(226, 94, 62);
+    bottom: 4px;
+    top: 60px;
+    left: 150px;
+}
+
+.upperbox{
+    position: absolute;
+    width: 900px;
+    height: 150px;
+    background-color: rgb(242,236,190);
+    bottom: 4px;
+    top: 60px;
+    left: 500px;
+}
+
+.img{
+    z-index: 3;
+    position: absolute;
+    top:260px;
+    left: 500px;
+    width: 900px;
+    height:400px;
+}
+
+.balance {
+    position: absolute;
+    left: 35px;
+    top: 125px;
+    background-color: rgb(226, 94, 62);
+    font-size: 250%;
+    font-family: monospace;
+
+}
+
+.logo {
+    position: absolute;
+   left: 125px;
+    top: 50px;
+    z-index: 2; 
+    background-color: transparent;
+    border: 10px;
+}
+
+.peso {
+    position: absolute;
+    left: 150px;
+    top: 250px;
+    transform: translate(-50%, -50%);
+    background-color: rgb(226, 94, 62);
+    font-size: 200%;
+    font-family: monospace;
+
+}
+
+.button1 {
+    position: absolute;
+    left: 230px;
+    top:580px;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 187, 92);
+    border-radius: 50%;
+    border: none;
+    color: black;
+    padding: 20px 30px;
+     text-align: center;
+    text-decoration: none;
+     display: inline-block;
+     font-size: 10px;
+     cursor: pointer;
+     radius: 50%;
+     height:50px;
+     width: 130px;
+     font-family: monospace;
+
+}
+
+.button1:hover{
+    background-color: orange;
+}
+
+.box{
+    position: absolute;
+    top: 10px;
+}
+
+.select{
+    position: absolute;
+    left: 20px;
+    top: 13px;
+    font-size: 23px;
+    font-family: monospace;
+
+}
+
+.button2:hover{
+    background-color: orange;
+
+}
+    
+.date{
+    position: absolute;
+    left: 525px;
+    top: 230px;
+    z-index: 3;
+    font-size: 25px;
+    font-family: monospace;
+}
+
+
+.date:hover{
+    background-color: orange;
+}
+
+.transaction{
+    position: absolute;
+    left: 678px;
+    top: 230px;
+    z-index: 4;
+    font-size: 25px;
+    font-family: monospace;
+}
+
+
+.transaction:hover{
+    background-color: orange;
+}
+
+.user{
+    position: absolute;
+    left: 900px;
+    top: 230px;
+    z-index: 5;
+    font-size: 25px;
+    font-family: monospace;
+}
+
+
+.user:hover{
+    background-color: orange;
+}
+
+.number{
+    position: absolute;
+    left: 1060px;
+    top: 230px;
+    z-index: 6;
+    font-family: monospace;
+    font-size: 25px;
+}
+
+
+.number:hover{
+    background-color: orange;
+
+}
+
+.button2 {
+    position: absolute;
+    left: 370px;
+    top: 580px;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 187, 92);
+    border-radius: 50%;
+    border: none;
+    color: black;
+    padding: 20px 30px;
+     text-align: center;
+    text-decoration: none;
+     display: inline-block;
+     font-size: 10px;
+     cursor: pointer;
+     radius: 50%;
+     height:50px;
+     width: 135px;
+     font-family: monospace;
+}
+
+.addincome{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 20px;
+    height: 30px;
+    width: 150px;
+    text-align: center;
+
+}
+
+.amount1{
+    position: absolute;
+    left: 1280px;
+    top: 230px;
+    z-index: 7;
+    font-size: 25px;
+    font-family: monospace;
+}
+
+.amount1:hover{
+    background-color: orange;
+
+}
+
+.amount{
+    position: absolute;
+    top: 15px;
+    left: 60px;
+    text-align: center;
+    z-index: 3;
+    font-family: monospace;
+
+}
+
+.box{
+    position: absolute;
+    top: 125px;
+    left: 525px;
+    width:400px;
+    height: 60px;
+}
+
+.box2{
+    position: absolute;
+    top: 125px;
+    left: 950px;
+    width:400px;
+    height: 60px;
+}
+
+.source{
+    position: absolute;
+    top: 15px;
+    left: 60px;
+    text-align: center;
+    font-family: monospace;
+
+}
