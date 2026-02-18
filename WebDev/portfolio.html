@@ -1,57 +1,229 @@
-
 <!DOCTYPE html>
-    <html>
-        <head>
-            <title>"Everyday with Isa"</title>
-            <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everyday with Isa - Fashion Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-                <a href="#contact"> </a>
-                
-                <img src="https://raw.githubusercontent.com/cbatuic/fashion-blog/main/profile.jpg">
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            color: #2c2c2c;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        }
 
-                <h3>by Isabelle Rodriguez | 1 day ago</h3>
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
 
-                <h1>An Insider's Guide to NFYW.</h1>
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease;
+        }
 
-                <img src="https://raw.githubusercontent.com/cbatuic/fashion-blog/main/image-one.jpeg"> 
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 4px solid #d4a5a5;
+            transition: transform 0.3s ease;
+        }
 
-                <p> <a href=" https://en.wikipedia.org/wiki/New_York_Fashion_Week." target=”_blank”> NYFW</a> can be both amazingly fun & incredibly overwhelming. Especially if you’ve never been. Luckily, I’m here to give you an insider’s guide and
-                    make your first show a pleasurable experience. By taking my tips and tricks, and following your
-                    gut. You’ll have an unforgettable experience!</p>
+        .profile-img:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
 
-                <h2>Getting Tickets & Picking the Shows</h2>
+        .author {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
 
-                <img src="https://raw.githubusercontent.com/cbatuic/fashion-blog/main/image-two.jpeg">
+        h1 {
+            font-size: 2.5rem;
+            color: #d4a5a5;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
 
-                <p>If you’re lucky or connected, you can get an invite sans the price tag. But I wasn’t so lucky or
-                    connected my first 2 years so I’m here to help you out. First, plan out which shows are the most
-                    important to you and make a schedule and this is a biggie: SET A BUDGET. If you’re worrying
-                    about blowing your cash the whole time you won’t have fun. Then check out prices, days, and
-                    times and prioritize the designers you want to see most. Lastly, purchase your tickets and get
-                    excited!</p>
+        h2 {
+            font-size: 1.8rem;
+            color: #9b7e7e;
+            margin: 2.5rem 0 1rem;
+            font-weight: 400;
+        }
 
-                <h2>Dressing for the shadows</h2>
+        .article-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1s ease;
+        }
 
-                <img src="https://raw.githubusercontent.com/cbatuic/fashion-blog/main/image-three.jpeg">
+        .article-img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
 
-                <p>“Always be true to your own sense of style, if you don’t you’ll be uncomfortable the whole time and it will show. Remember, NYFW is
-                    about expressing yourself and taking in what the designers have chosen to express through their
-                    new lines. Also it’s important to wear shoes you’ll be comfortable in all day. Obviously, you want to
-                    look good, but you’ll be on your feet all day long, so be prepared.”</p>
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            animation: fadeIn 1.2s ease;
+        }
 
-                <h4>Related Content
-                    <ul>
-                        <li>“How To Style Boyfriend Jeans”</li>
-                        <li>“When Print Is Too Much”</li>
-                        <li>“The Overalls Trend”</li>
-                        <li>“Fall’s It Colo: Blush”</li>
-                      </ul>
-                </h4>
+        a {
+            color: #d4a5a5;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
 
-                <div id='contact'>
-                    <p><strong>Email</strong>: isa@fashionblog.com | <strong>Phone</strong>>: 917-555-1098 | <strong>Address</strong>>: 371 284th St., New York, NY,
-                        10001</p>
-            </div>
-            </body>
-        </head>
-    </html>
+        a:hover {
+            border-bottom-color: #d4a5a5;
+        }
+
+        .related {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 3rem 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            animation: slideUp 0.8s ease;
+        }
+
+        .related h4 {
+            color: #9b7e7e;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .related ul {
+            list-style: none;
+        }
+
+        .related li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            transition: padding-left 0.3s ease;
+            cursor: pointer;
+        }
+
+        .related li:hover {
+            padding-left: 1rem;
+            color: #d4a5a5;
+        }
+
+        .contact {
+            background: #d4a5a5;
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 3rem;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .contact strong {
+            color: #fff;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .article-img {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img class="profile-img" src="https://raw.githubusercontent.com/cbatuic/fashion-blog/main/profile.jpg" alt="Isabelle Rodriguez">
+            <p class="author">by Isabelle Rodriguez | 1 day ago</p>
+            <h1>An Insider's Guide to NYFW</h1>
+        </header>
+
+        <article>
+            <img class="article-img" src="https://raw.githubusercontent.com/cbatuic/fashion-blog/main/image-one.jpeg" alt="NYFW">
+
+            <p><a href="https://en.wikipedia.org/wiki/New_York_Fashion_Week" target="_blank">NYFW</a> can be both amazingly fun & incredibly overwhelming, especially if you've never been. Luckily, I'm here to give you an insider's guide and make your first show a pleasurable experience. By taking my tips and tricks, and following your gut, you'll have an unforgettable experience!</p>
+
+            <h2>Getting Tickets & Picking the Shows</h2>
+
+            <img class="article-img" src="https://raw.githubusercontent.com/cbatuic/fashion-blog/main/image-two.jpeg" alt="Fashion Show">
+
+            <p>If you're lucky or connected, you can get an invite sans the price tag. But I wasn't so lucky or connected my first 2 years so I'm here to help you out. First, plan out which shows are the most important to you and make a schedule and this is a biggie: SET A BUDGET. If you're worrying about blowing your cash the whole time you won't have fun. Then check out prices, days, and times and prioritize the designers you want to see most. Lastly, purchase your tickets and get excited!</p>
+
+            <h2>Dressing for the Shows</h2>
+
+            <img class="article-img" src="https://raw.githubusercontent.com/cbatuic/fashion-blog/main/image-three.jpeg" alt="Fashion Style">
+
+            <p>Always be true to your own sense of style, if you don't you'll be uncomfortable the whole time and it will show. Remember, NYFW is about expressing yourself and taking in what the designers have chosen to express through their new lines. Also it's important to wear shoes you'll be comfortable in all day. Obviously, you want to look good, but you'll be on your feet all day long, so be prepared.</p>
+        </article>
+
+        <div class="related">
+            <h4>Related Content</h4>
+            <ul>
+                <li>How To Style Boyfriend Jeans</li>
+                <li>When Print Is Too Much</li>
+                <li>The Overalls Trend</li>
+                <li>Fall's It Color: Blush</li>
+            </ul>
+        </div>
+
+        <div class="contact" id="contact">
+            <p><strong>Email:</strong> isa@fashionblog.com | <strong>Phone:</strong> 917-555-1098 | <strong>Address:</strong> 371 284th St., New York, NY, 10001</p>
+        </div>
+    </div>
+</body>
+</html>

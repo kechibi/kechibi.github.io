@@ -1,51 +1,513 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="WireStyle.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WireFrame</title>
+    <title>Finance Tracker - WireFrame</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 100%;
+            width: 100%;
+            animation: fadeIn 0.8s ease;
+            overflow-x: auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            height: 60px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .header-balance {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .balance-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+
+        .balance-amount {
+            font-size: 1.8rem;
+            color: #f5576c;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .table-title {
+            text-align: center;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover:not(.balance-row):not(.action-row):not(.form-row) {
+            background: linear-gradient(90deg, #f5f5f5 0%, #e8e8e8 100%);
+            transform: scale(1.005);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .balance-row {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+            color: white !important;
+            display: none;
+        }
+
+        .action-row {
+            background: #f8f9fa !important;
+        }
+
+        .action-row td {
+            padding: 1.5rem 1.2rem;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-receive {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-receive:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        .form-row td {
+            background: #fafafa;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .label-cell {
+            font-weight: 600;
+            color: #667eea;
+            width: 180px;
+            white-space: nowrap;
+        }
+
+        .new-row {
+            animation: slideIn 0.5s ease;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            th, td {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .label-cell {
+                width: 150px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <img class="logo" src="https://cdn-icons-png.flaticon.com/512/2695/2695971.png" style="height: 100px;">
-    <div class="mainleftbox"> <h1 class="balance"> Total Balance </h1>
-    <h3 class="peso">₱12,123.45</h3>
-    </div>
-
-    <button class="button1" type="button">Send Money</button>
-
-    <button class="button2" type="button">Receive Money</button>
-   
-    
-     <div class="upperbox">
-        <select class="select" >
-          <option value="Income">Add Income</option>
-          <option value="Expense">Add Expense</option>
-          
-        </select>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <img class="logo" src="https://cdn-icons-png.flaticon.com/512/2695/2695971.png" alt="Finance Logo">
+                <span class="header-title">Finance Tracker Dashboard</span>
+            </div>
+            <div class="header-balance">
+                <span class="balance-label">Total Balance</span>
+                <span class="balance-amount" id="totalBalance">₱12,123.45</span>
+            </div>
         </div>
 
-        
+        <div class="table-wrapper">
+            <table>
+            <thead>
+                <tr>
+                    <th colspan="8" class="table-title">Account Overview & Transactions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Form Section -->
+                <tr class="form-row">
+                    <td class="label-cell">User</td>
+                    <td colspan="2">
+                        <input type="text" id="user" placeholder="Enter user name">
+                    </td>
+                    <td class="label-cell">Phone Number</td>
+                    <td colspan="4">
+                        <input type="text" id="phone" placeholder="Enter phone number">
+                    </td>
+                </tr>
+                <tr class="form-row">
+                    <td class="label-cell">Source</td>
+                    <td colspan="2">
+                        <input type="text" id="source" placeholder="Enter source">
+                    </td>
+                    <td class="label-cell">Amount</td>
+                    <td colspan="4">
+                        <input type="number" id="amount" placeholder="Enter amount">
+                    </td>
+                </tr>
+                <tr class="form-row">
+                    <td class="label-cell">Transaction</td>
+                    <td colspan="2">
+                        <input type="text" id="transaction" placeholder="Enter transaction description">
+                    </td>
+                    <td class="label-cell">Transaction Type</td>
+                    <td colspan="4">
+                        <select id="transactionType">
+                            <option value="Income">Add Income</option>
+                            <option value="Expense">Add Expense</option>
+                        </select>
+                    </td>
+                </tr>
 
-    <div class="box">
-    <h3 class="amount">Amount:   ___________________ </h3>
+                <!-- Action Buttons Row -->
+                <tr class="action-row">
+                    <td colspan="8" style="text-align: center;">
+                        <button class="btn btn-send" onclick="addTransaction('Send Money')">Send Money</button>
+                        <button class="btn btn-receive" onclick="addTransaction('Receive Money')">Receive Money</button>
+                    </td>
+                </tr>
 
-    
+                <!-- Transaction History Header -->
+                <tr>
+                    <th>Date/Time</th>
+                    <th>Type</th>
+                    <th>Transaction</th>
+                    <th>User</th>
+                    <th>Phone Number</th>
+                    <th>Source</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
 
-     </div>
+                <!-- Transaction History Data -->
+                <tr>
+                    <td>12/01/2026</td>
+                    <td>Income</td>
+                    <td>Salary Payment</td>
+                    <td>John Doe</td>
+                    <td>+63 912 345 6789</td>
+                    <td>Company</td>
+                    <td style="color: #28a745; font-weight: 600;">₱5,000</td>
+                    <td><span style="background: #28a745; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem;">Receive Money</span></td>
+                </tr>
+                <tr>
+                    <td>12/02/2026</td>
+                    <td>Expense</td>
+                    <td>Grocery Shopping</td>
+                    <td>Jane Smith</td>
+                    <td>+63 923 456 7890</td>
+                    <td>Supermarket</td>
+                    <td style="color: #dc3545; font-weight: 600;">₱1,200</td>
+                    <td><span style="background: #dc3545; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem;">Send Money</span></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
 
-     <div class="box2">
-        <h3 class="source">Source:  ___________________  </h3>
-     </div>
-     
-     <div class="lowesrbox">
-    <img class="img" src="dre.png" alt="history" width="100" height="200">    
-    <h1 class="date">Date/Time</h1>
-    <h1 class="transaction">Transaction</h1>
-    <h1 class="user">User</h1>
-    <h1 class="number">Phone Number </h1>
-    <h1 class="amount1">Amount </h1>
+    <script>
+        let balance = 12123.45;
+        let transactions = [];
 
-</div>
+        // Load data from localStorage on page load
+        function loadData() {
+            const savedBalance = localStorage.getItem('financeBalance');
+            const savedTransactions = localStorage.getItem('financeTransactions');
+            
+            if (savedBalance) {
+                balance = parseFloat(savedBalance);
+                document.getElementById('totalBalance').textContent = `₱${balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            }
+            
+            if (savedTransactions) {
+                transactions = JSON.parse(savedTransactions);
+                displayTransactions();
+            }
+        }
+
+        // Display all saved transactions
+        function displayTransactions() {
+            const tbody = document.querySelector('tbody');
+            
+            transactions.forEach(trans => {
+                const newRow = tbody.insertRow(tbody.rows.length);
+                newRow.className = 'new-row';
+
+                const cell1 = newRow.insertCell(0);
+                const cell2 = newRow.insertCell(1);
+                const cell3 = newRow.insertCell(2);
+                const cell4 = newRow.insertCell(3);
+                const cell5 = newRow.insertCell(4);
+                const cell6 = newRow.insertCell(5);
+                const cell7 = newRow.insertCell(6);
+                const cell8 = newRow.insertCell(7);
+
+                cell1.textContent = trans.dateTime;
+                cell2.textContent = trans.type;
+                cell3.textContent = trans.transaction;
+                cell4.textContent = trans.user;
+                cell5.textContent = trans.phone;
+                cell6.textContent = trans.source;
+                cell7.textContent = `₱${parseFloat(trans.amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                cell7.style.color = trans.color;
+                cell7.style.fontWeight = '600';
+                cell8.innerHTML = `<span style="background: ${trans.statusBg}; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem;">${trans.status}</span>`;
+            });
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('financeBalance', balance.toString());
+            localStorage.setItem('financeTransactions', JSON.stringify(transactions));
+        }
+
+        function addTransaction(action) {
+            // Get form values
+            const type = document.getElementById('transactionType').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const source = document.getElementById('source').value;
+            const transaction = document.getElementById('transaction').value;
+            const user = document.getElementById('user').value;
+            const phone = document.getElementById('phone').value;
+
+            // Validate inputs
+            if (!amount || !source || !transaction || !user || !phone) {
+                alert('Please fill in all fields!');
+                return;
+            }
+
+            if (amount <= 0) {
+                alert('Amount must be greater than 0!');
+                return;
+            }
+
+            // Update balance
+            if (action === 'Send Money') {
+                balance -= amount;
+            } else {
+                balance += amount;
+            }
+
+            // Update balance display
+            document.getElementById('totalBalance').textContent = `₱${balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            // Get current date/time
+            const now = new Date();
+            const dateTime = now.toLocaleString('en-US', {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const color = action === 'Send Money' ? '#dc3545' : '#28a745';
+            const statusBg = action === 'Send Money' ? '#dc3545' : '#28a745';
+
+            // Save transaction to array
+            const transactionData = {
+                dateTime: dateTime,
+                type: type,
+                transaction: transaction,
+                user: user,
+                phone: phone,
+                source: source,
+                amount: amount,
+                color: color,
+                statusBg: statusBg,
+                status: action
+            };
+            transactions.push(transactionData);
+
+            // Create new row
+            const tbody = document.querySelector('tbody');
+            const newRow = tbody.insertRow(tbody.rows.length);
+            newRow.className = 'new-row';
+
+            // Add cells
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+            const cell5 = newRow.insertCell(4);
+            const cell6 = newRow.insertCell(5);
+            const cell7 = newRow.insertCell(6);
+            const cell8 = newRow.insertCell(7);
+
+            cell1.textContent = dateTime;
+            cell2.textContent = type;
+            cell3.textContent = transaction;
+            cell4.textContent = user;
+            cell5.textContent = phone;
+            cell6.textContent = source;
+            cell7.textContent = `₱${amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            cell7.style.color = color;
+            cell7.style.fontWeight = '600';
+            cell8.innerHTML = `<span style="background: ${statusBg}; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem;">${action}</span>`;
+
+            // Save to localStorage
+            saveData();
+
+            // Clear form
+            document.getElementById('amount').value = '';
+            document.getElementById('source').value = '';
+            document.getElementById('transaction').value = '';
+            document.getElementById('user').value = '';
+            document.getElementById('phone').value = '';
+
+            // Show success message
+            alert(`${action} successful! Amount: ₱${amount.toFixed(2)}`);
+        }
+
+        // Load data when page loads
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
 </body>
 </html>

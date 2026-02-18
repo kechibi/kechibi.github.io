@@ -1,33 +1,180 @@
-
 <!DOCTYPE html>
-    <html>
-        <head>
-            <title>Wine Festival Schedule</title>
-            <body>
-                <div class="container">
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <th colspan="2"> <h1> Wine Festival Schedule </h1> </th> </tr>
-                            <tr> 
-                                 <th> <h2> Time </h2> </th>  
-                                 <th> <h2> Event </h2> </th>        </tr>
-                        </thead>
-                        <tbody>
-                            <tr> <td class="left"><h3>12:00 pm</h3></td>
-                            <td>Welcome Reception</td> </tr>
-                            <tr> <td class="left"><h3>01:00 pm</h3></td>
-                            <td>Storytelling <amp>&</amp> Testing</td></tr>
-                            <tr> <td class="left"><h3>02:00 pm</h3></td>
-                            <td>Wine Lucheon</td></tr>
-                            <tr> <td class="left"><h3>03:00 pm</h3></td>
-                            <td>Aguillar Family Wines</td></tr>
-                            <tr> <td class="left"><h3>04:00 pm</h3></td>
-                            <td>Wine <amp>&</amp> Cheese Testing</td></tr>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Festival Schedule</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-                        </tbody>
-                    </table>
-                </div>
-            </body>
-        </head>
-    </html>
+        body {
+            font-family: 'Garamond', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            animation: fadeIn 0.8s ease;
+        }
+
+        h1 {
+            text-align: center;
+            color: #764ba2;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 1.5rem;
+            text-align: left;
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+
+        tbody tr {
+            background: white;
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+        tbody tr:hover {
+            background: linear-gradient(90deg, #f5f5f5 0%, #e8e8e8 100%);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        td {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .time {
+            color: #764ba2;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 150px;
+        }
+
+        .event {
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            th, td {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .time {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wine Festival Schedule</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time">12:00 PM</td>
+                    <td class="event">Welcome Reception</td>
+                </tr>
+                <tr>
+                    <td class="time">01:00 PM</td>
+                    <td class="event">Storytelling & Tasting</td>
+                </tr>
+                <tr>
+                    <td class="time">02:00 PM</td>
+                    <td class="event">Wine Luncheon</td>
+                </tr>
+                <tr>
+                    <td class="time">03:00 PM</td>
+                    <td class="event">Aguilar Family Wines</td>
+                </tr>
+                <tr>
+                    <td class="time">04:00 PM</td>
+                    <td class="event">Wine & Cheese Tasting</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

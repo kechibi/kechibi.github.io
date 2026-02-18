@@ -1,13 +1,14 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <link href="Aboutme.css" rel="stylesheet">    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andre's Portfolio</title>
+    <title>Contact - Andre Jose C. Ruiz</title>
 </head>
-<body>
+<body class="font-sans leading-relaxed text-[#2c3e50] bg-pastel-4 dark:bg-dark-bg dark:text-[#eaeaea] transition-colors duration-300">
+    
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-links">
@@ -23,70 +24,83 @@
         </div>
     </nav>
 
+    <!-- Transition Overlays -->
     <div class="dark-mode-overlay"></div>
     <div class="light-mode-overlay"></div>
     <div class="page-transition"></div>
-    <div class="stars" id="stars"></div>
+    
+    <!-- Stars -->
+    <div id="stars" class="stars"></div>
 
-    <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-image">
-                <img class="profile-img" src="images/andre.png" alt="Andre Jose C. Ruiz">
-            </div>
-            <div class="hero-text">
-                <h1 class="code-bracket">&lt; andre &gt;</h1>
-                <p class="hero-description">A student from Davao, Philippines who focuses on creating front-end ideas and loves to code using Javascript, Vite, CSS, HTML, Tailwind, and more.</p>
-                <div class="code-snippet">
-                    <code class="code-line"><span class="code-tag">&lt;html&gt;</span></code>
-                    <code class="code-line indent-1"><span class="code-property">height:</span><span class="code-value">184px;</span></code>
-                    <code class="code-line"><span class="code-tag">&lt;div</span> <span class="code-attribute">class=</span><span class="code-string">"jedi"</span><span class="code-tag">&gt;</span></code>
-                    <code class="code-line indent-1"><span class="code-property">CSS3</span> <span class="code-property">HTML5</span></code>
-                    <code class="code-line indent-1"><span class="code-property">color:</span><span class="code-value">#000;</span></code>
-                    <code class="code-line indent-1"><span class="code-property">jQuery</span></code>
-                </div>
+    <!-- Contact Section -->
+    <section class="contact-section" style="min-height: 100vh; padding-top: 11rem;">
+        <div class="container">
+            <h2 class="section-title">Connect With Me</h2>
+            <div class="social-links">
+                <a href="https://www.facebook.com/kechibiii" target="_blank" class="social-link" aria-label="Facebook">
+                    <img src="https://www.facebook.com/images/fb_icon_325x325.png" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/kechibiii/" target="_blank" class="social-link" aria-label="Instagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+                </a>
+                <a href="https://twitter.com/mrkechibi" target="_blank" class="social-link" aria-label="Twitter">
+                    <img src="https://about.twitter.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png" alt="Twitter">
+                </a>
+                <a href="https://github.com/kechibi" target="_blank" class="social-link" aria-label="GitHub">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/2048px-Octicons-mark-github.svg.png" alt="GitHub">
+                </a>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2026 Andre Jose C. Ruiz. All rights reserved.</p>
     </footer>
 
     <div class="page-navigation">
-        <button class="page-nav-btn prev" disabled>
+        <a href="projects.html" class="page-nav-btn prev">
             <span>←</span>
             <span>Previous</span>
-        </button>
+        </a>
         <div class="page-dots">
+            <span class="page-dot"></span>
+            <span class="page-dot"></span>
+            <span class="page-dot"></span>
             <span class="page-dot active"></span>
-            <span class="page-dot"></span>
-            <span class="page-dot"></span>
-            <span class="page-dot"></span>
         </div>
-        <a href="about.html" class="page-nav-btn next">
+        <button class="page-nav-btn next" disabled>
             <span>Next</span>
             <span>→</span>
-        </a>
+        </button>
     </div>
 
     <script>
         // Page Transition
         const pageTransition = document.querySelector('.page-transition');
-        const nextBtn = document.querySelector('.page-nav-btn.next');
+        const navBtns = document.querySelectorAll('.page-nav-btn:not([disabled])');
 
-        if (nextBtn) {
-            nextBtn.addEventListener('click', (e) => {
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const href = nextBtn.getAttribute('href');
-                pageTransition.className = 'page-transition next-direction';
+                const href = btn.getAttribute('href');
+                
+                // Check if it's previous or next button
+                if (btn.classList.contains('prev')) {
+                    pageTransition.className = 'page-transition prev-direction';
+                } else {
+                    pageTransition.className = 'page-transition next-direction';
+                }
+                
                 setTimeout(() => {
                     pageTransition.classList.add('active');
                 }, 10);
+                
                 setTimeout(() => {
                     window.location.href = href;
                 }, 600);
             });
-        }
+        });
 
         // Fade in on page load
         window.addEventListener('load', () => {
@@ -103,7 +117,6 @@
         const lightOverlay = document.querySelector('.light-mode-overlay');
         const starsContainer = document.getElementById('stars');
 
-        // Generate stars
         function generateStars() {
             const numberOfStars = 100;
             starsContainer.innerHTML = '';
@@ -118,7 +131,6 @@
 
         generateStars();
 
-        // Check for saved dark mode preference
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
         if (isDarkMode) {
             body.classList.add('dark-mode');
@@ -128,7 +140,6 @@
             const isDarkModeActive = body.classList.contains('dark-mode');
             
             if (!isDarkModeActive) {
-                // Switching to dark mode
                 darkOverlay.classList.add('active');
                 setTimeout(() => {
                     body.classList.add('dark-mode');
@@ -137,7 +148,6 @@
                     darkOverlay.classList.remove('active');
                 }, 1100);
             } else {
-                // Switching to light mode
                 lightOverlay.classList.add('active');
                 setTimeout(() => {
                     body.classList.remove('dark-mode');

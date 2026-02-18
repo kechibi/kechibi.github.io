@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andre Jose C. Ruiz - Portfolio</title>
+</head>
+<body class="font-sans leading-relaxed text-[#2c3e50] bg-pastel-4 dark:bg-dark-bg dark:text-[#eaeaea] transition-colors duration-300">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-pastel-3 dark:bg-dark-nav shadow-md z-[10000] transition-colors duration-300">
+        <div class="max-w-[1200px] mx-auto px-8 py-6 flex justify-between items-center">
+            <div class="flex gap-12 flex-1 justify-center">
+                <a href="#home" class="text-[#2c3e50] dark:text-[#eaeaea] no-underline text-base font-medium transition-all duration-[0.4s] relative px-4 py-2 rounded-lg hover:text-pastel-1 hover:bg-pastel-1 hover:-translate-y-0.5 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-[3px] after:bg-pastel-1 after:transition-all after:duration-[0.4s] after:rounded hover:after:w-4/5">Home</a>
+                <a href="#about" class="text-[#2c3e50] dark:text-[#eaeaea] no-underline text-base font-medium transition-all duration-[0.4s] relative px-4 py-2 rounded-lg hover:text-pastel-1 hover:bg-pastel-1 hover:-translate-y-0.5 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-[3px] after:bg-pastel-1 after:transition-all after:duration-[0.4s] after:rounded hover:after:w-4/5">About</a>
+                <a href="#projects" class="text-[#2c3e50] dark:text-[#eaeaea] no-underline text-base font-medium transition-all duration-[0.4s] relative px-4 py-2 rounded-lg hover:text-pastel-1 hover:bg-pastel-1 hover:-translate-y-0.5 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-[3px] after:bg-pastel-1 after:transition-all after:duration-[0.4s] after:rounded hover:after:w-4/5">Projects</a>
+                <a href="#contact" class="text-[#2c3e50] dark:text-[#eaeaea] no-underline text-base font-medium transition-all duration-[0.4s] relative px-4 py-2 rounded-lg hover:text-pastel-1 hover:bg-pastel-1 hover:-translate-y-0.5 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-[3px] after:bg-pastel-1 after:transition-all after:duration-[0.4s] after:rounded hover:after:w-4/5">Contact</a>
+            </div>
+            <button id="darkModeToggle" class="bg-transparent border-none cursor-pointer text-[1.8rem] transition-all duration-300 flex items-center p-2 ml-auto hover:scale-110 hover:rotate-[15deg]" aria-label="Toggle dark mode">
+                <span class="sun-icon dark:hidden">☀️</span>
+                <span class="moon-icon hidden dark:inline">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Transition Overlays -->
+    <div class="dark-mode-overlay fixed top-0 left-0 w-full h-full bg-dark-bg pointer-events-none z-[999999] transition-all duration-1000 ease-in-out [clip-path:circle(0%_at_50%_35%)] [&.active]:[clip-path:circle(150%_at_50%_35%)]"></div>
+    <div class="light-mode-overlay fixed top-0 left-0 w-full h-full bg-pastel-4 pointer-events-none z-[999999] transition-all duration-1000 ease-in-out [clip-path:circle(0%_at_50%_35%)] [&.active]:[clip-path:circle(150%_at_50%_35%)]"></div>
+    
+    <!-- Stars -->
+    <div id="stars" class="fixed top-0 left-0 w-full h-full pointer-events-none z-[5] opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-start pt-24 pr-8 pb-16 pl-16 bg-gradient-to-br from-pastel-3 to-pastel-4 dark:from-dark-nav dark:to-dark-card">
+        <div class="flex items-center gap-0 max-w-full w-full relative">
+            <div class="flex-none flex justify-start z-[1]">
+                <img class="w-[650px] h-auto object-cover grayscale transition-all duration-[0.4s] hover:scale-[1.02] hover:grayscale-0" src="images/andre.png" alt="Andre Jose C. Ruiz">
+            </div>
+            <div class="flex-none flex flex-col gap-6 -ml-32 z-[2] relative max-w-[500px]">
+                <h1 class="text-[3.5rem] font-bold text-[#2c3e50] dark:text-[#eaeaea] font-mono leading-none">&lt; andre &gt;</h1>
+                <p class="text-[0.9rem] text-[#5a6c7d] dark:text-[#b8c5d6] leading-[1.7] mb-4">A student from Davao, Philippines who focuses on creating front-end ideas and loves to code using Javascript, Vite, CSS, HTML, Tailwind, and more.</p>
+                <div class="flex flex-col gap-[0.4rem] font-mono text-[0.8rem] text-[#999]">
+                    <code class="block"><span class="text-[#2c3e50] dark:text-[#eaeaea]">&lt;html&gt;</span></code>
+                    <code class="block pl-8"><span class="text-[#666]">height:</span><span class="text-[#999]">184px;</span></code>
+                    <code class="block"><span class="text-[#2c3e50] dark:text-[#eaeaea]">&lt;div</span> <span class="text-[#666]">class=</span><span class="text-[#999]">"jedi"</span><span class="text-[#2c3e50] dark:text-[#eaeaea]">&gt;</span></code>
+                    <code class="block pl-8"><span class="text-[#666]">CSS3</span> <span class="text-[#666]">HTML5</span></code>
+                    <code class="block pl-8"><span class="text-[#666]">color:</span><span class="text-[#999]">#000;</span></code>
+                    <code class="block pl-8"><span class="text-[#666]">jQuery</span></code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-8 bg-pastel-4 dark:bg-dark-bg">
+        <div class="max-w-[1200px] mx-auto px-8">
+            <h2 class="text-[2.5rem] font-bold text-center mb-12 text-[#2c3e50] dark:text-[#eaeaea]">About Me</h2>
+            <div class="max-w-[800px] mx-auto text-center">
+                <p class="text-lg text-[#5a6c7d] dark:text-[#b8c5d6] mb-6 leading-[1.8]">I am a Computer Science student at the University of Immaculate Concepcion, based in Davao City, Philippines.</p>
+                <p class="text-lg text-[#5a6c7d] dark:text-[#b8c5d6] mb-6 leading-[1.8]">My passion lies in front-end development, where I can bring creative ideas to life and build meaningful digital experiences. I'm constantly learning and growing through coding, collaboration, and exploring new technologies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 px-8 bg-pastel-3 dark:bg-dark-nav">
+        <div class="max-w-[1200px] mx-auto px-8">
+            <h2 class="text-[2.5rem] font-bold text-center mb-12 text-[#2c3e50] dark:text-[#eaeaea]">Projects</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 max-w-[1200px] mx-auto">
+                <a href="https://kechibi.github.io/portfolio.html" target="_blank" class="bg-pastel-4 dark:bg-dark-card p-12 rounded-xl text-center no-underline text-[#2c3e50] dark:text-[#eaeaea] shadow-[0_4px_15px_rgba(196,223,223,0.3)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-[0.4s] border-2 border-transparent relative z-10 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_12px_30px_rgba(196,223,223,0.5)] hover:bg-pastel-2 dark:hover:bg-[#1a4d7a] hover:border-pastel-1">
+                    <h3 class="text-2xl font-semibold text-[#2c3e50] dark:text-[#eaeaea] transition-colors duration-300 hover:text-pastel-1">Fashion Blog</h3>
+                </a>
+                <a href="https://kechibi.github.io/wineschedule.html" target="_blank" class="bg-pastel-4 dark:bg-dark-card p-12 rounded-xl text-center no-underline text-[#2c3e50] dark:text-[#eaeaea] shadow-[0_4px_15px_rgba(196,223,223,0.3)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-[0.4s] border-2 border-transparent relative z-10 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_12px_30px_rgba(196,223,223,0.5)] hover:bg-pastel-2 dark:hover:bg-[#1a4d7a] hover:border-pastel-1">
+                    <h3 class="text-2xl font-semibold text-[#2c3e50] dark:text-[#eaeaea] transition-colors duration-300 hover:text-pastel-1">Wine Festival</h3>
+                </a>
+                <a href="https://kechibi.github.io/DaviesBurger.html" target="_blank" class="bg-pastel-4 dark:bg-dark-card p-12 rounded-xl text-center no-underline text-[#2c3e50] dark:text-[#eaeaea] shadow-[0_4px_15px_rgba(196,223,223,0.3)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-[0.4s] border-2 border-transparent relative z-10 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_12px_30px_rgba(196,223,223,0.5)] hover:bg-pastel-2 dark:hover:bg-[#1a4d7a] hover:border-pastel-1">
+                    <h3 class="text-2xl font-semibold text-[#2c3e50] dark:text-[#eaeaea] transition-colors duration-300 hover:text-pastel-1">Davie's Burger</h3>
+                </a>
+                <a href="https://www.figma.com/file/lZ8KaUiuhv242ikcKy0c4F/Untitled?type=design&node-id=0-1&mode=design&t=k6et8uCyAsITqY4G-0" target="_blank" class="bg-pastel-4 dark:bg-dark-card p-12 rounded-xl text-center no-underline text-[#2c3e50] dark:text-[#eaeaea] shadow-[0_4px_15px_rgba(196,223,223,0.3)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-[0.4s] border-2 border-transparent relative z-10 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_12px_30px_rgba(196,223,223,0.5)] hover:bg-pastel-2 dark:hover:bg-[#1a4d7a] hover:border-pastel-1">
+                    <h3 class="text-2xl font-semibold text-[#2c3e50] dark:text-[#eaeaea] transition-colors duration-300 hover:text-pastel-1">WireFrame</h3>
+                </a>
+                <a href="https://kechibi.github.io/WireFrame.html" target="_blank" class="bg-pastel-4 dark:bg-dark-card p-12 rounded-xl text-center no-underline text-[#2c3e50] dark:text-[#eaeaea] shadow-[0_4px_15px_rgba(196,223,223,0.3)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-[0.4s] border-2 border-transparent relative z-10 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_12px_30px_rgba(196,223,223,0.5)] hover:bg-pastel-2 dark:hover:bg-[#1a4d7a] hover:border-pastel-1">
+                    <h3 class="text-2xl font-semibold text-[#2c3e50] dark:text-[#eaeaea] transition-colors duration-300 hover:text-pastel-1">WireFrame High-Fidelity</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-8 bg-pastel-4 dark:bg-dark-bg">
+        <div class="max-w-[1200px] mx-auto px-8">
+            <h2 class="text-[2.5rem] font-bold text-center mb-12 text-[#2c3e50] dark:text-[#eaeaea]">Connect With Me</h2>
+            <div class="flex justify-center gap-8 flex-wrap">
+                <a href="https://www.facebook.com/kechibiii" target="_blank" class="inline-block transition-all duration-[0.4s] p-4 rounded-full bg-pastel-3 dark:bg-dark-nav hover:scale-[1.2] hover:rotate-[5deg] hover:bg-pastel-1 dark:hover:bg-dark-card hover:shadow-[0_8px_20px_rgba(196,223,223,0.4)] dark:hover:shadow-[0_8px_20px_rgba(196,223,223,0.2)]" aria-label="Facebook">
+                    <img src="https://www.facebook.com/images/fb_icon_325x325.png" alt="Facebook" class="w-10 h-10 object-contain block">
+                </a>
+                <a href="https://www.instagram.com/kechibiii/" target="_blank" class="inline-block transition-all duration-[0.4s] p-4 rounded-full bg-pastel-3 dark:bg-dark-nav hover:scale-[1.2] hover:rotate-[5deg] hover:bg-pastel-1 dark:hover:bg-dark-card hover:shadow-[0_8px_20px_rgba(196,223,223,0.4)] dark:hover:shadow-[0_8px_20px_rgba(196,223,223,0.2)]" aria-label="Instagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="w-10 h-10 object-contain block">
+                </a>
+                <a href="https://twitter.com/mrkechibi" target="_blank" class="inline-block transition-all duration-[0.4s] p-4 rounded-full bg-pastel-3 dark:bg-dark-nav hover:scale-[1.2] hover:rotate-[5deg] hover:bg-pastel-1 dark:hover:bg-dark-card hover:shadow-[0_8px_20px_rgba(196,223,223,0.4)] dark:hover:shadow-[0_8px_20px_rgba(196,223,223,0.2)]" aria-label="Twitter">
+                    <img src="https://about.twitter.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png" alt="Twitter" class="w-10 h-10 object-contain block">
+                </a>
+                <a href="https://github.com/kechibi" target="_blank" class="inline-block transition-all duration-[0.4s] p-4 rounded-full bg-pastel-3 dark:bg-dark-nav hover:scale-[1.2] hover:rotate-[5deg] hover:bg-pastel-1 dark:hover:bg-dark-card hover:shadow-[0_8px_20px_rgba(196,223,223,0.4)] dark:hover:shadow-[0_8px_20px_rgba(196,223,223,0.2)]" aria-label="GitHub">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/2048px-Octicons-mark-github.svg.png" alt="GitHub" class="w-10 h-10 object-contain block">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-pastel-1 dark:bg-[#0f0f1e] text-[#2c3e50] dark:text-[#eaeaea] text-center py-8 text-sm">
+        <p>&copy; 2026 Andre Jose C. Ruiz. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
