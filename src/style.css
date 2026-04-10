@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .star {
+    animation: twinkle 3s infinite;
+  }
+  
+  .star:nth-child(2n) {
+    animation-duration: 4s;
+    animation-delay: 0.5s;
+  }
+  
+  .star:nth-child(3n) {
+    animation-duration: 5s;
+    animation-delay: 1s;
+  }
+  
+  .star:nth-child(4n) {
+    @apply w-[3px] h-[3px];
+  }
+  
+  .star:nth-child(5n) {
+    animation-duration: 6s;
+    animation-delay: 1.5s;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}

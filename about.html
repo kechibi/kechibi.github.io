@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About Andre Jose C. Ruiz — CS student, front-end developer, and tech enthusiast from Davao City, Philippines.">
+    <title>About - Andre Jose C. Ruiz</title>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links" id="navLinks">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="about.html">About</a>
+                <a class="nav-link" href="projects.html">Projects</a>
+                <a class="nav-link" href="contact.html">Contact</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                <span class="sun-icon">☀️</span>
+                <span class="moon-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="dark-mode-overlay"></div>
+    <div class="light-mode-overlay"></div>
+    <div class="stars" id="stars"></div>
+    <canvas id="lightParticles" class="light-particles"></canvas>
+
+    <section class="about-section">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <p>Hello, I'm Andre Jose C. Ruiz, a Computer Science student at the University of Immaculate Concepcion in Davao City, Philippines.</p>
+                <p>My passion is front-end development, where I love turning creative ideas into interactive and meaningful user experiences. I thrive on building sleek interfaces and experimenting with the latest tools like JavaScript, Vite, CSS, HTML, and Tailwind.</p>
+                <p>I'm always eager to learn and grow through hands-on coding, team collaborations, and diving into new technologies. Let's connect and create something awesome together!</p>
+
+                <div class="skills-grid" role="list" aria-label="Skills">
+                    <span class="skill-tag" role="listitem">HTML5</span>
+                    <span class="skill-tag" role="listitem">CSS3</span>
+                    <span class="skill-tag" role="listitem">JavaScript</span>
+                    <span class="skill-tag" role="listitem">Tailwind CSS</span>
+                    <span class="skill-tag" role="listitem">Vite</span>
+                    <span class="skill-tag" role="listitem">jQuery</span>
+                    <span class="skill-tag" role="listitem">Responsive Design</span>
+                    <span class="skill-tag" role="listitem">Git</span>
+                    <span class="skill-tag" role="listitem">Figma</span>
+                </div>
+
+                <div class="education-block">
+                    <h3>Education</h3>
+                    <div class="edu-item">
+                        <div class="degree">Bachelor of Science in Computer Science</div>
+                        <div class="school">University of Immaculate Concepcion &mdash; Davao City, Philippines</div>
+                        <div class="school">2025 &ndash; 2026</div>
+                    </div>
+                    <div class="edu-item">
+                        <div class="degree">Senior High School &mdash; Science, Technology, Engineering, and Mathematics</div>
+                        <div class="school">University of Immaculate Concepcion &mdash; Davao City, Philippines</div>
+                        <div class="school">2021 &ndash; 2022</div>
+                    </div>
+                    <div class="edu-item">
+                        <div class="degree">High School</div>
+                        <div class="school">Holy Cross College of Sasa &mdash; Davao City, Philippines</div>
+                        <div class="school">2019 &ndash; 2020</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 Andre Jose C. Ruiz. All rights reserved.</p>
+    </footer>
+
+
+
+    <script src="main.js"></script>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            const open = navLinks.classList.toggle('open');
+            hamburger.classList.toggle('open', open);
+            hamburger.setAttribute('aria-expanded', open);
+        });
+    </script>
+</body>
+</html>

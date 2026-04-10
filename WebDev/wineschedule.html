@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Festival Schedule</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #1a0a2e;
+            min-height: 100vh;
+            color: #f0e6d3;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #2d0a4e 0%, #6b1a7a 50%, #9b2a3a 100%);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '🍷';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.08;
+            top: -1rem;
+            left: 2rem;
+        }
+
+        .header::after {
+            content: '🍇';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.08;
+            top: -1rem;
+            right: 2rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: #f5d78e;
+            text-shadow: 0 2px 20px rgba(245, 215, 142, 0.4);
+        }
+
+        .header p {
+            margin-top: 0.5rem;
+            color: #d4a8c7;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .header-date {
+            display: inline-block;
+            margin-top: 1rem;
+            background: rgba(245, 215, 142, 0.15);
+            border: 1px solid rgba(245, 215, 142, 0.3);
+            padding: 0.4rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #f5d78e;
+            letter-spacing: 1px;
+        }
+
+        /* ── Day Tabs ── */
+        .day-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem 2rem;
+            background: #120720;
+            flex-wrap: wrap;
+        }
+
+        .day-tab {
+            padding: 0.6rem 1.8rem;
+            border-radius: 30px;
+            border: 1px solid rgba(245, 215, 142, 0.3);
+            background: transparent;
+            color: #d4a8c7;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .day-tab:hover {
+            background: rgba(245, 215, 142, 0.1);
+            color: #f5d78e;
+        }
+
+        .day-tab.active {
+            background: linear-gradient(135deg, #6b1a7a, #9b2a3a);
+            border-color: transparent;
+            color: #f5d78e;
+            box-shadow: 0 4px 15px rgba(155, 42, 58, 0.4);
+        }
+
+        /* ── Main Content ── */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .day-title {
+            font-size: 1.5rem;
+            color: #f5d78e;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.5rem;
+            background: linear-gradient(135deg, #6b1a7a, #9b2a3a);
+            border: none;
+            border-radius: 30px;
+            color: #f5d78e;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(155, 42, 58, 0.3);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(155, 42, 58, 0.5);
+        }
+
+        /* ── Schedule Table ── */
+        .schedule-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem;
+        }
+
+        .schedule-table thead tr th {
+            padding: 0.75rem 1.5rem;
+            text-align: left;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: #d4a8c7;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        .schedule-table tbody tr {
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            animation: slideIn 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        .schedule-table tbody tr:hover {
+            background: rgba(245, 215, 142, 0.07);
+            transform: translateX(4px);
+        }
+
+        .schedule-table td {
+            padding: 1.2rem 1.5rem;
+            vertical-align: middle;
+        }
+
+        .schedule-table td:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .schedule-table td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .time-cell {
+            color: #f5d78e;
+            font-size: 1rem;
+            font-weight: 600;
+            white-space: nowrap;
+            width: 130px;
+        }
+
+        .event-cell {
+            color: #f0e6d3;
+            font-size: 1rem;
+        }
+
+        .event-cell .event-name {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .event-cell .event-desc {
+            font-size: 0.8rem;
+            color: #d4a8c7;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .badge-tasting { background: rgba(107, 26, 122, 0.4); color: #d4a8c7; }
+        .badge-dining  { background: rgba(155, 42, 58, 0.4);  color: #f5a8a8; }
+        .badge-event   { background: rgba(245, 215, 142, 0.15); color: #f5d78e; }
+        .badge-custom  { background: rgba(80, 160, 120, 0.3); color: #a8f0d4; }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #6b3a4a;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.3rem 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover { color: #f5a8a8; background: rgba(155, 42, 58, 0.2); }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b3a4a;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .empty-state span { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 0, 20, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: #1e0a35;
+            border: 1px solid rgba(245, 215, 142, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            animation: popIn 0.3s ease;
+        }
+
+        .modal h2 {
+            color: #f5d78e;
+            font-size: 1.4rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            color: #d4a8c7;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(245, 215, 142, 0.2);
+            border-radius: 8px;
+            color: #f0e6d3;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: rgba(245, 215, 142, 0.5);
+        }
+
+        .form-group select option { background: #1e0a35; }
+
+        .form-group textarea { resize: vertical; min-height: 70px; }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .btn-cancel {
+            padding: 0.6rem 1.4rem;
+            background: transparent;
+            border: 1px solid rgba(245, 215, 142, 0.2);
+            border-radius: 8px;
+            color: #d4a8c7;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cancel:hover { background: rgba(255,255,255,0.05); }
+
+        .btn-save {
+            padding: 0.6rem 1.8rem;
+            background: linear-gradient(135deg, #6b1a7a, #9b2a3a);
+            border: none;
+            border-radius: 8px;
+            color: #f5d78e;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(155, 42, 58, 0.3);
+        }
+
+        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(155, 42, 58, 0.5); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2rem; }
+            .main { padding: 1rem; }
+            .time-cell { width: 90px; font-size: 0.85rem; }
+            .event-cell .event-name { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🍷 Wine Festival</h1>
+    <p>ANNUAL CELEBRATION OF FINE WINES</p>
+    <span class="header-date">📅 June 14 – 16, 2026 &nbsp;|&nbsp; Davao City, Philippines</span>
+</div>
+
+<div class="day-tabs" id="dayTabs"></div>
+
+<div class="main">
+    <div class="day-header">
+        <div class="day-title" id="dayTitle"></div>
+        <button class="add-btn" onclick="openModal()">＋ Add Schedule</button>
+    </div>
+
+    <table class="schedule-table">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Event</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="scheduleBody"></tbody>
+    </table>
+
+    <div class="empty-state" id="emptyState" style="display:none;">
+        <span>🍾</span>
+        No events scheduled for this day yet.<br>Click "Add Schedule" to get started.
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h2>Add Event</h2>
+        <div class="form-group">
+            <label>Time</label>
+            <input type="time" id="inputTime">
+        </div>
+        <div class="form-group">
+            <label>Event Name</label>
+            <input type="text" id="inputEvent" placeholder="e.g. Wine Tasting Session">
+        </div>
+        <div class="form-group">
+            <label>Description (optional)</label>
+            <textarea id="inputDesc" placeholder="Brief description..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <select id="inputCategory">
+                <option value="tasting">Tasting</option>
+                <option value="dining">Dining</option>
+                <option value="event">Event</option>
+                <option value="custom">Other</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+            <button class="btn-save" onclick="saveEvent()">Add to Schedule</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const days = [
+        { label: 'Day 1', date: 'June 14, 2026' },
+        { label: 'Day 2', date: 'June 15, 2026' },
+        { label: 'Day 3', date: 'June 16, 2026' },
+    ];
+
+    // Default schedule data per day
+    const defaultSchedule = {
+        0: [
+            { time: '12:00', event: 'Welcome Reception', desc: 'Opening ceremony and welcome drinks', category: 'event' },
+            { time: '13:00', event: 'Storytelling & Tasting', desc: 'Winemakers share their stories', category: 'tasting' },
+            { time: '14:30', event: 'Wine Luncheon', desc: 'Curated 3-course meal with wine pairings', category: 'dining' },
+            { time: '16:00', event: 'Aguilar Family Wines', desc: 'Featured winery showcase', category: 'tasting' },
+            { time: '18:00', event: 'Wine & Cheese Tasting', desc: 'Evening pairing session', category: 'tasting' },
+        ],
+        1: [
+            { time: '10:00', event: 'Morning Vineyard Tour', desc: 'Guided tour of the festival grounds', category: 'event' },
+            { time: '12:00', event: 'Sparkling Wine Brunch', desc: 'Champagne and light bites', category: 'dining' },
+            { time: '14:00', event: 'Red Wine Masterclass', desc: 'Expert-led tasting of premium reds', category: 'tasting' },
+            { time: '17:00', event: 'Sunset Wine Bar', desc: 'Open bar with live acoustic music', category: 'event' },
+        ],
+        2: [
+            { time: '11:00', event: 'White Wine Workshop', desc: 'Explore crisp whites and rosés', category: 'tasting' },
+            { time: '13:00', event: 'Gala Lunch', desc: 'Grand closing luncheon', category: 'dining' },
+            { time: '15:00', event: 'Best Wine Awards', desc: 'Annual awards ceremony', category: 'event' },
+            { time: '17:30', event: 'Farewell Toast', desc: 'Closing ceremony and final toast', category: 'event' },
+        ],
+    };
+
+    let currentDay = 0;
+    let scheduleData = JSON.parse(localStorage.getItem('wineSchedule')) || JSON.parse(JSON.stringify(defaultSchedule));
+
+    function saveToStorage() {
+        localStorage.setItem('wineSchedule', JSON.stringify(scheduleData));
+    }
+
+    function formatTime(t) {
+        const [h, m] = t.split(':');
+        const hour = parseInt(h);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const display = ((hour % 12) || 12) + ':' + m + ' ' + ampm;
+        return display;
+    }
+
+    const badgeMap = {
+        tasting: ['badge-tasting', 'Tasting'],
+        dining:  ['badge-dining',  'Dining'],
+        event:   ['badge-event',   'Event'],
+        custom:  ['badge-custom',  'Other'],
+    };
+
+    function renderTabs() {
+        const container = document.getElementById('dayTabs');
+        container.innerHTML = '';
+        days.forEach((d, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'day-tab' + (i === currentDay ? ' active' : '');
+            btn.textContent = d.label + ' — ' + d.date;
+            btn.onclick = () => { currentDay = i; renderTabs(); renderSchedule(); };
+            container.appendChild(btn);
+        });
+    }
+
+    function renderSchedule() {
+        document.getElementById('dayTitle').textContent = days[currentDay].label + ' · ' + days[currentDay].date;
+        const tbody = document.getElementById('scheduleBody');
+        const empty = document.getElementById('emptyState');
+        const events = (scheduleData[currentDay] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
+
+        tbody.innerHTML = '';
+
+        if (events.length === 0) {
+            empty.style.display = 'block';
+            return;
+        }
+
+        empty.style.display = 'none';
+
+        events.forEach((ev, i) => {
+            const [cls, label] = badgeMap[ev.category] || badgeMap.custom;
+            const tr = document.createElement('tr');
+            tr.style.animationDelay = (i * 0.07) + 's';
+            tr.innerHTML = `
+                <td class="time-cell">${formatTime(ev.time)}</td>
+                <td class="event-cell">
+                    <div class="event-name">${ev.event}</div>
+                    ${ev.desc ? `<div class="event-desc">${ev.desc}</div>` : ''}
+                </td>
+                <td><span class="category-badge ${cls}">${label}</span></td>
+                <td><button class="delete-btn" onclick="deleteEvent(${i})" title="Remove">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function deleteEvent(index) {
+        const events = (scheduleData[currentDay] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
+        const original = scheduleData[currentDay];
+        const toRemove = events[index];
+        scheduleData[currentDay] = original.filter(e => !(e.time === toRemove.time && e.event === toRemove.event));
+        saveToStorage();
+        renderSchedule();
+    }
+
+    function openModal() {
+        document.getElementById('modalOverlay').classList.add('open');
+        document.getElementById('inputTime').value = '';
+        document.getElementById('inputEvent').value = '';
+        document.getElementById('inputDesc').value = '';
+        document.getElementById('inputCategory').value = 'tasting';
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    function saveEvent() {
+        const time = document.getElementById('inputTime').value;
+        const event = document.getElementById('inputEvent').value.trim();
+        const desc = document.getElementById('inputDesc').value.trim();
+        const category = document.getElementById('inputCategory').value;
+
+        if (!time || !event) {
+            alert('Please fill in the time and event name.');
+            return;
+        }
+
+        if (!scheduleData[currentDay]) scheduleData[currentDay] = [];
+        scheduleData[currentDay].push({ time, event, desc, category });
+        saveToStorage();
+        closeModal();
+        renderSchedule();
+    }
+
+    // Close modal on overlay click
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    renderTabs();
+    renderSchedule();
+</script>
+</body>
+</html>

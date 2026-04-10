@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Projects by Andre Jose C. Ruiz — front-end web development work including Wine Festival, Davie's Burger, and more.">
+    <title>Projects - Andre Jose C. Ruiz</title>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links" id="navLinks">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="about.html">About</a>
+                <a class="nav-link" href="projects.html">Projects</a>
+                <a class="nav-link" href="contact.html">Contact</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                <span class="sun-icon">☀️</span>
+                <span class="moon-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="dark-mode-overlay"></div>
+    <div class="light-mode-overlay"></div>
+    <div class="stars" id="stars"></div>
+    <canvas id="lightParticles" class="light-particles"></canvas>
+
+    <section class="projects-section">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+
+                <a href="WebDev/wineschedule.html" target="_blank" rel="noopener noreferrer" class="project-card">
+                    <h3>Wine Festival</h3>
+                    <p>A schedule and event page for a wine festival, featuring a clean layout with event listings and timing details.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">HTML</span>
+                        <span class="project-tag">CSS</span>
+                    </div>
+                    <span class="project-link-label">View project →</span>
+                </a>
+
+                <a href="WebDev/DaviesBurger.html" target="_blank" rel="noopener noreferrer" class="project-card">
+                    <h3>Davie's Burger</h3>
+                    <p>A restaurant landing page for a burger joint, showcasing the menu and brand identity with a bold visual style.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">HTML</span>
+                        <span class="project-tag">CSS</span>
+                    </div>
+                    <span class="project-link-label">View project →</span>
+                </a>
+
+                <a href="WebDev/WireFrame.html" target="_blank" rel="noopener noreferrer" class="project-card">
+                    <h3>WireFrame High-Fidelity</h3>
+                    <p>A high-fidelity wireframe prototype demonstrating UI/UX design principles and layout planning for a web application.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">HTML</span>
+                        <span class="project-tag">CSS</span>
+                        <span class="project-tag">UI/UX</span>
+                    </div>
+                    <span class="project-link-label">View project →</span>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 Andre Jose C. Ruiz. All rights reserved.</p>
+    </footer>
+
+
+
+    <script src="main.js"></script>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            const open = navLinks.classList.toggle('open');
+            hamburger.classList.toggle('open', open);
+            hamburger.setAttribute('aria-expanded', open);
+        });
+    </script>
+</body>
+</html>

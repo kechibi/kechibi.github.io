@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface2: #22263a;
+            --border: rgba(255,255,255,0.07);
+            --accent: #6c63ff;
+            --accent2: #a78bfa;
+            --green: #22c55e;
+            --red: #f43f5e;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --card-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 240px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1rem;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .logo-text {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 0.5px;
+        }
+
+        .nav-section {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            text-transform: uppercase;
+            padding: 0 0.75rem;
+            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0.75rem;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-item:hover { background: var(--surface2); color: var(--text); }
+        .nav-item.active { background: rgba(108,99,255,0.15); color: var(--accent2); }
+        .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: var(--surface2);
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .sidebar-footer .name { color: var(--text); font-weight: 600; font-size: 0.9rem; }
+
+        /* ── Main ── */
+        .main {
+            margin-left: 240px;
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* ── Top Bar ── */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .topbar h1 { font-size: 1.4rem; font-weight: 700; }
+        .topbar p { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+
+        .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.4rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(108,99,255,0.35);
+        }
+
+        .add-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108,99,255,0.45); }
+
+        /* ── Stat Cards ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover { transform: translateY(-3px); }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-value.balance { color: var(--accent2); }
+        .stat-value.income  { color: var(--green); }
+        .stat-value.expense { color: var(--red); }
+
+        .stat-sub {
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-top: 0.4rem;
+        }
+
+        /* ── Transaction Table ── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header h2 { font-size: 1rem; font-weight: 600; }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .filter-tab {
+            padding: 0.35rem 0.9rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-tab.active, .filter-tab:hover {
+            background: rgba(108,99,255,0.15);
+            color: var(--accent2);
+            border-color: rgba(108,99,255,0.3);
+        }
+
+        .table-wrap { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        thead th {
+            padding: 0.85rem 1.5rem;
+            text-align: left;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s ease;
+            animation: rowIn 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+        td {
+            padding: 1rem 1.5rem;
+            font-size: 0.88rem;
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .tx-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .tx-icon.income  { background: rgba(34,197,94,0.15); }
+        .tx-icon.expense { background: rgba(244,63,94,0.15); }
+
+        .tx-info { display: flex; align-items: center; gap: 0.75rem; }
+        .tx-name { font-weight: 500; }
+        .tx-sub  { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+
+        .amount.income  { color: var(--green); font-weight: 600; }
+        .amount.expense { color: var(--red);   font-weight: 600; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge.income  { background: rgba(34,197,94,0.15);  color: var(--green); }
+        .badge.expense { background: rgba(244,63,94,0.15);  color: var(--red); }
+
+        .del-btn {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 0.3rem 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .del-btn:hover { color: var(--red); background: rgba(244,63,94,0.1); }
+
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .empty span { font-size: 2rem; display: block; margin-bottom: 0.75rem; }
+
+        /* ── Drawer ── */
+        .drawer-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+
+        .drawer-overlay.open { display: block; }
+
+        .drawer {
+            position: fixed;
+            top: 0; right: -420px; bottom: 0;
+            width: 400px;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 201;
+            padding: 2rem;
+            transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+            overflow-y: auto;
+        }
+
+        .drawer.open { right: 0; }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .drawer-header h2 { font-size: 1.2rem; font-weight: 700; }
+
+        .close-btn {
+            background: var(--surface2);
+            border: none;
+            color: var(--muted);
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover { color: var(--text); background: var(--border); }
+
+        .type-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .type-btn {
+            padding: 0.75rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .type-btn.income.active  { background: rgba(34,197,94,0.15);  color: var(--green); border-color: rgba(34,197,94,0.3); }
+        .type-btn.expense.active { background: rgba(244,63,94,0.15);  color: var(--red);   border-color: rgba(244,63,94,0.3); }
+        .type-btn:not(.active):hover { background: var(--surface2); color: var(--text); }
+
+        .form-group { margin-bottom: 1.2rem; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus { border-color: rgba(108,99,255,0.5); }
+
+        .form-group select option { background: var(--surface2); }
+
+        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(108,99,255,0.3);
+        }
+
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108,99,255,0.45); }
+
+        @keyframes rowIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 1rem; }
+            .drawer { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="logo">
+        <div class="logo-icon">💰</div>
+        <span class="logo-text">FinTrack</span>
+    </div>
+
+    <span class="nav-section">Menu</span>
+    <div class="nav-item active"><span class="icon">📊</span> Dashboard</div>
+    <div class="nav-item"><span class="icon">💳</span> Transactions</div>
+    <div class="nav-item"><span class="icon">📈</span> Analytics</div>
+    <div class="nav-item"><span class="icon">🏦</span> Accounts</div>
+
+    <span class="nav-section">Settings</span>
+    <div class="nav-item"><span class="icon">⚙️</span> Preferences</div>
+    <div class="nav-item"><span class="icon">🔔</span> Notifications</div>
+
+    <div class="sidebar-footer">
+        <div class="name">Andre Ruiz</div>
+        <div>Personal Account</div>
+    </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+    <div class="topbar">
+        <div>
+            <h1>Dashboard</h1>
+            <p id="todayDate"></p>
+        </div>
+        <button class="add-btn" onclick="openDrawer()">＋ Add Transaction</button>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">💼 Total Balance</div>
+            <div class="stat-value balance" id="statBalance">₱0.00</div>
+            <div class="stat-sub">Current available balance</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">📥 Total Income</div>
+            <div class="stat-value income" id="statIncome">₱0.00</div>
+            <div class="stat-sub" id="incomeCount">0 transactions</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">📤 Total Expenses</div>
+            <div class="stat-value expense" id="statExpense">₱0.00</div>
+            <div class="stat-sub" id="expenseCount">0 transactions</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">🔄 Transactions</div>
+            <div class="stat-value balance" id="statCount">0</div>
+            <div class="stat-sub">All time total</div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Transaction History</h2>
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterTx('all', this)">All</button>
+                <button class="filter-tab" onclick="filterTx('Income', this)">Income</button>
+                <button class="filter-tab" onclick="filterTx('Expense', this)">Expense</button>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction</th>
+                        <th>User</th>
+                        <th>Source</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="txBody"></tbody>
+            </table>
+            <div class="empty" id="emptyState">
+                <span>💸</span>
+                No transactions yet. Add one to get started.
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Drawer Overlay -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- Drawer -->
+<div class="drawer" id="drawer">
+    <div class="drawer-header">
+        <h2>New Transaction</h2>
+        <button class="close-btn" onclick="closeDrawer()">✕</button>
+    </div>
+
+    <div class="type-toggle">
+        <button class="type-btn income active" id="btnIncome" onclick="setType('Income')">📥 Income</button>
+        <button class="type-btn expense" id="btnExpense" onclick="setType('Expense')">📤 Expense</button>
+    </div>
+
+    <div class="form-row-2">
+        <div class="form-group">
+            <label>User Name</label>
+            <input type="text" id="fUser" placeholder="e.g. John Doe">
+        </div>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" id="fPhone" placeholder="+63 912 345 6789">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Transaction Description</label>
+        <input type="text" id="fTransaction" placeholder="e.g. Salary Payment">
+    </div>
+
+    <div class="form-row-2">
+        <div class="form-group">
+            <label>Source</label>
+            <input type="text" id="fSource" placeholder="e.g. Company">
+        </div>
+        <div class="form-group">
+            <label>Amount (₱)</label>
+            <input type="number" id="fAmount" placeholder="0.00" min="0">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Category</label>
+        <select id="fCategory">
+            <option>Salary</option>
+            <option>Freelance</option>
+            <option>Investment</option>
+            <option>Food & Dining</option>
+            <option>Shopping</option>
+            <option>Transport</option>
+            <option>Bills & Utilities</option>
+            <option>Healthcare</option>
+            <option>Entertainment</option>
+            <option>Other</option>
+        </select>
+    </div>
+
+    <button class="submit-btn" onclick="submitTransaction()">Add Transaction</button>
+</div>
+
+<script>
+    let txType = 'Income';
+    let transactions = JSON.parse(localStorage.getItem('fintrackTx') || '[]');
+    let balance = parseFloat(localStorage.getItem('fintrackBalance') || '0');
+    let currentFilter = 'all';
+
+    // Set today's date
+    document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    function fmt(n) {
+        return '₱' + parseFloat(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function updateStats() {
+        const income  = transactions.filter(t => t.type === 'Income').reduce((s, t) => s + t.amount, 0);
+        const expense = transactions.filter(t => t.type === 'Expense').reduce((s, t) => s + t.amount, 0);
+        balance = income - expense;
+
+        document.getElementById('statBalance').textContent  = fmt(balance);
+        document.getElementById('statIncome').textContent   = fmt(income);
+        document.getElementById('statExpense').textContent  = fmt(expense);
+        document.getElementById('statCount').textContent    = transactions.length;
+        document.getElementById('incomeCount').textContent  = transactions.filter(t => t.type === 'Income').length + ' transactions';
+        document.getElementById('expenseCount').textContent = transactions.filter(t => t.type === 'Expense').length + ' transactions';
+
+        localStorage.setItem('fintrackBalance', balance);
+        localStorage.setItem('fintrackTx', JSON.stringify(transactions));
+    }
+
+    function renderTable(filter) {
+        const tbody = document.getElementById('txBody');
+        const empty = document.getElementById('emptyState');
+        const list  = filter === 'all' ? transactions : transactions.filter(t => t.type === filter);
+
+        tbody.innerHTML = '';
+
+        if (list.length === 0) {
+            empty.style.display = 'block';
+            return;
+        }
+
+        empty.style.display = 'none';
+
+        [...list].reverse().forEach((tx, i) => {
+            const isIncome = tx.type === 'Income';
+            const tr = document.createElement('tr');
+            tr.style.animationDelay = (i * 0.05) + 's';
+            tr.innerHTML = `
+                <td>
+                    <div class="tx-info">
+                        <div class="tx-icon ${isIncome ? 'income' : 'expense'}">${isIncome ? '📥' : '📤'}</div>
+                        <div>
+                            <div class="tx-name">${tx.transaction}</div>
+                            <div class="tx-sub">${tx.category}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="tx-name">${tx.user}</div>
+                    <div class="tx-sub">${tx.phone}</div>
+                </td>
+                <td>${tx.source}</td>
+                <td>${tx.date}</td>
+                <td class="amount ${isIncome ? 'income' : 'expense'}">${isIncome ? '+' : '-'}${fmt(tx.amount)}</td>
+                <td><span class="badge ${isIncome ? 'income' : 'expense'}">${tx.type}</span></td>
+                <td><button class="del-btn" onclick="deleteTransaction('${tx.id}')">🗑</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function filterTx(type, btn) {
+        currentFilter = type;
+        document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderTable(type);
+    }
+
+    function deleteTransaction(id) {
+        transactions = transactions.filter(t => t.id !== id);
+        updateStats();
+        renderTable(currentFilter);
+    }
+
+    function setType(type) {
+        txType = type;
+        document.getElementById('btnIncome').classList.toggle('active', type === 'Income');
+        document.getElementById('btnExpense').classList.toggle('active', type === 'Expense');
+    }
+
+    function openDrawer() {
+        document.getElementById('drawer').classList.add('open');
+        document.getElementById('drawerOverlay').classList.add('open');
+    }
+
+    function closeDrawer() {
+        document.getElementById('drawer').classList.remove('open');
+        document.getElementById('drawerOverlay').classList.remove('open');
+    }
+
+    function submitTransaction() {
+        const user        = document.getElementById('fUser').value.trim();
+        const phone       = document.getElementById('fPhone').value.trim();
+        const transaction = document.getElementById('fTransaction').value.trim();
+        const source      = document.getElementById('fSource').value.trim();
+        const amount      = parseFloat(document.getElementById('fAmount').value);
+        const category    = document.getElementById('fCategory').value;
+
+        if (!user || !phone || !transaction || !source || !amount || amount <= 0) {
+            alert('Please fill in all fields with valid values.');
+            return;
+        }
+
+        const tx = {
+            id: Date.now().toString(),
+            type: txType,
+            user, phone, transaction, source, amount, category,
+            date: new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
+        };
+
+        transactions.push(tx);
+        updateStats();
+        renderTable(currentFilter);
+        closeDrawer();
+
+        // Reset form
+        ['fUser','fPhone','fTransaction','fSource','fAmount'].forEach(id => document.getElementById(id).value = '');
+        setType('Income');
+    }
+
+    // Init
+    updateStats();
+    renderTable('all');
+</script>
+</body>
+</html>

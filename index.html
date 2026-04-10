@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Andre Jose C. Ruiz — Front-end developer and Computer Science student from Davao, Philippines.">
+    <title>Andre's Portfolio</title>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links" id="navLinks">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="about.html">About</a>
+                <a class="nav-link" href="projects.html">Projects</a>
+                <a class="nav-link" href="contact.html">Contact</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                <span class="sun-icon">☀️</span>
+                <span class="moon-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="dark-mode-overlay"></div>
+    <div class="light-mode-overlay"></div>
+    <div class="stars" id="stars"></div>
+    <canvas id="lightParticles" class="light-particles"></canvas>
+
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-image">
+                <img class="profile-img" src="images/andre.png" alt="Andre Jose C. Ruiz">
+            </div>
+            <div class="hero-text">
+                <h1 class="code-bracket">&lt; andre &gt;</h1>
+                <p class="hero-description">A Computer Science student from Davao, Philippines who focuses on creating front-end experiences and loves to code using JavaScript, Vite, CSS, HTML, Tailwind, and more.</p>
+                <div class="code-snippet" aria-hidden="true">
+                    <code class="code-line"><span class="code-tag">&lt;div</span> <span class="code-attribute">class=</span><span class="code-string">"developer"</span><span class="code-tag">&gt;</span></code>
+                    <code class="code-line indent-1"><span class="code-property">name:</span> <span class="code-value">"Andre";</span></code>
+                    <code class="code-line indent-1"><span class="code-property">stack:</span> <span class="code-value">["HTML", "CSS", "JS"];</span></code>
+                    <code class="code-line indent-1"><span class="code-property">tools:</span> <span class="code-value">["Vite", "Tailwind"];</span></code>
+                    <code class="code-line indent-1"><span class="code-property">location:</span> <span class="code-value">"Davao, PH";</span></code>
+                    <code class="code-line"><span class="code-tag">&lt;/div&gt;</span></code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 Andre Jose C. Ruiz. All rights reserved.</p>
+    </footer>
+
+
+
+    <script src="main.js"></script>
+    <script>
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            const open = navLinks.classList.toggle('open');
+            hamburger.classList.toggle('open', open);
+            hamburger.setAttribute('aria-expanded', open);
+        });
+    </script>
+</body>
+</html>
