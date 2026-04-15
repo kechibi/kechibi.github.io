@@ -1,8 +1,5 @@
 // Shared script for all pages
 
-// Set opacity to 0 immediately to prevent flash
-document.documentElement.style.opacity = '0';
-
 // Apply saved dark mode before paint
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
 if (isDarkMode) {
@@ -10,10 +7,6 @@ if (isDarkMode) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    // Fade in
-    document.documentElement.style.transition = 'opacity 0.4s ease';
-    document.documentElement.style.opacity = '1';
-
     // Stars
     const starsContainer = document.getElementById('stars');
     if (starsContainer) {
