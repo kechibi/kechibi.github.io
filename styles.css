@@ -279,8 +279,8 @@ body {
     justify-content: center;
     margin-top: 1.8rem;
     padding: 0.6rem 1.8rem;
-    background: #4ecdc4;
-    color: #1a4a47;
+    background: #8b1a2f;
+    color: #f5d0d8;
     font-size: 0.75rem;
     font-family: 'Courier New', monospace;
     font-weight: 700;
@@ -293,47 +293,42 @@ body {
     cursor: pointer;
     image-rendering: pixelated;
 
-    /* pixel-art layered box shadow: top-left highlight, bottom-right shadow, outer dark border */
     box-shadow:
-        /* outer dark border */
-        0 0 0 3px #1a4a47,
-        /* bottom depth */
-        0 6px 0 0 #1a4a47,
-        /* inner top-left shine */
-        inset 3px 3px 0 0 rgba(255,255,255,0.35),
-        /* inner bottom-right shade */
-        inset -3px -3px 0 0 rgba(0,0,0,0.15);
+        0 0 0 3px #4a0a15,
+        0 6px 0 0 #4a0a15,
+        inset 3px 3px 0 0 rgba(255,255,255,0.2),
+        inset -3px -3px 0 0 rgba(0,0,0,0.2);
 
     transition: transform 0.08s, box-shadow 0.08s;
 }
 .email-btn span {
     position: relative;
     z-index: 1;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
 .email-btn:hover {
-    background: #5eddd4;
+    background: #a02038;
     transform: translateY(2px);
     box-shadow:
-        0 0 0 3px #1a4a47,
-        0 4px 0 0 #1a4a47,
-        inset 3px 3px 0 0 rgba(255,255,255,0.35),
-        inset -3px -3px 0 0 rgba(0,0,0,0.15);
+        0 0 0 3px #4a0a15,
+        0 4px 0 0 #4a0a15,
+        inset 3px 3px 0 0 rgba(255,255,255,0.2),
+        inset -3px -3px 0 0 rgba(0,0,0,0.2);
 }
 .email-btn:active {
     transform: translateY(6px);
     box-shadow:
-        0 0 0 3px #1a4a47,
-        0 0px 0 0 #1a4a47,
-        inset 3px 3px 0 0 rgba(255,255,255,0.35),
-        inset -3px -3px 0 0 rgba(0,0,0,0.15);
+        0 0 0 3px #4a0a15,
+        0 0px 0 0 #4a0a15,
+        inset 3px 3px 0 0 rgba(255,255,255,0.2),
+        inset -3px -3px 0 0 rgba(0,0,0,0.2);
 }
 .dark-mode .email-btn {
-    background: #4ecdc4;
-    color: #1a4a47;
+    background: #8b1a2f;
+    color: #f5d0d8;
 }
 .dark-mode .email-btn:hover {
-    background: #5eddd4;
+    background: #a02038;
 }
 
 /* ── About Section ── */
