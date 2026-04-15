@@ -184,22 +184,11 @@ window.addEventListener('DOMContentLoaded', () => {
     drawShooters();
     const darkModeToggle = document.getElementById('darkModeToggle');
     const body = document.body;
-    const darkOverlay = document.querySelector('.dark-mode-overlay');
-    const lightOverlay = document.querySelector('.light-mode-overlay');
 
     if (darkModeToggle) {
         darkModeToggle.addEventListener('click', () => {
-            const active = body.classList.contains('dark-mode');
-            if (!active) {
-                darkOverlay.classList.add('active');
-                setTimeout(() => body.classList.add('dark-mode'), 200);
-                setTimeout(() => darkOverlay.classList.remove('active'), 450);
-            } else {
-                lightOverlay.classList.add('active');
-                setTimeout(() => body.classList.remove('dark-mode'), 200);
-                setTimeout(() => lightOverlay.classList.remove('active'), 450);
-            }
-            localStorage.setItem('darkMode', !active);
+            const active = body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', active);
         });
     }
 
