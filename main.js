@@ -1,9 +1,9 @@
 // Shared script for all pages
 
-// Apply saved dark mode before paint
+// Apply saved dark mode before paint (also handled inline in <head>)
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
 if (isDarkMode) {
-    document.body.classList.add('dark-mode');
+    document.documentElement.classList.add('dark-mode');
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -180,7 +180,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (darkModeToggle) {
         darkModeToggle.addEventListener('click', () => {
-            const active = body.classList.toggle('dark-mode');
+            const active = document.documentElement.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', active);
         });
     }
