@@ -273,6 +273,30 @@ body {
 .code-attribute { color: #666; }
 .code-string { color: #999; }
 
+.email-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.4rem;
+    border: 1px solid #2c3e50;
+    color: #2c3e50;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+.email-btn:hover {
+    background: #2c3e50;
+    color: #fff;
+}
+.dark-mode .email-btn {
+    border-color: #b8c5d6;
+    color: #b8c5d6;
+}
+.dark-mode .email-btn:hover {
+    background: #b8c5d6;
+    color: #1a2a3a;
+}
+
 /* ── About Section ── */
 .about-section {
     min-height: 100vh;
