@@ -413,9 +413,15 @@ html.dark-mode .email-btn:hover {
 
 /* ── Projects Section ── */
 .projects-section {
-    min-height: 100vh;
-    padding: 11rem 2rem 6rem;
+    min-height: auto;
+    padding: 8rem 2rem 3rem;
     background-color: #E3F4F4;
+}
+
+.video-editing-section {
+    min-height: auto;
+    padding: 3rem 2rem 4rem;
+    border-top: 2px solid rgba(196, 223, 223, 0.5);
 }
 
 .projects-grid {
@@ -618,6 +624,7 @@ html.dark-mode .edu-item .school { color: #b8c5d6; }
 html.dark-mode .education-block h3 { color: #eaeaea; }
 
 html.dark-mode .projects-section { background-color: #16213e; }
+html.dark-mode .video-editing-section { border-top-color: rgba(255,255,255,0.08); }
 
 html.dark-mode .project-card {
     background-color: #0f3460;
@@ -831,7 +838,7 @@ html.dark-mode .hamburger span { background-color: #eaeaea; }
 
     /* Projects */
     .projects-section {
-        padding: 7rem 1.5rem 4rem;
+        padding: 5rem 1.5rem 2rem;
     }
 
     .projects-grid { grid-template-columns: 1fr; }
