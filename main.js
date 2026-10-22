@@ -61,38 +61,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Keyboard Navigation ────────────────────────
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft')  updateCategories(activeIndex - 1);
-        if (e.key === 'ArrowRight') updateCategories(activeIndex + 1);
-
-        // Arrow up/down: move through submenu items
-        const submenu = document.querySelector('.xmb-submenu');
-        if (!submenu) return;
-        const items = Array.from(submenu.querySelectorAll('.submenu-item'));
-        const focused = submenu.querySelector('.submenu-item.focused');
-        let fi = items.indexOf(focused);
-
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            const next = (fi + 1) % items.length;
-            items.forEach(it => it.classList.remove('focused'));
-            items[next].classList.add('focused');
-            updateDetailContent(activeIndex, next);
-        }
-        if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            const prev = ((fi - 1) + items.length) % items.length;
-            items.forEach(it => it.classList.remove('focused'));
-            items[prev].classList.add('focused');
-            updateDetailContent(activeIndex, prev);
-        }
-        if (e.key === 'Enter' || e.key === 'x' || e.key === 'X') {
-            // "X" button = confirm/open
-            const f = submenu.querySelector('.submenu-item.focused') || items[0];
-            if (f && f.href) window.open(f.href, f.target || '_self');
-        }
-    });
-
     // ── Touch/Swipe Navigation ─────────────────────
     let touchStartX = 0;
     let touchStartY = 0;
@@ -251,8 +219,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function buildSubmenu(catIndex) {
         const data = categoryData[catIndex];
-        const menu = document.createElement('div');
-        menu.className = 'xmb-submenu';
+        const track = document.getElementById('xmbSubmenuTrack');
+        if (!track) return;
+
+        // Clear previous items
+        track.innerHTML = '';
+        // Reset track position
+        track.style.transform = 'translateY(0)';
 
         data.submenu.forEach((item, i) => {
             const el = item.href ? document.createElement('a') : document.createElement('div');
@@ -279,15 +252,55 @@ window.addEventListener('DOMContentLoaded', () => {
             el.appendChild(arrow);
 
             el.addEventListener('mouseenter', () => {
-                menu.querySelectorAll('.submenu-item').forEach(it => it.classList.remove('focused'));
-                el.classList.add('focused');
-                updateDetailContent(catIndex, i);
+                setFocusedItem(catIndex, i);
             });
 
-            menu.appendChild(el);
+            track.appendChild(el);
         });
 
-        return menu;
+        // After render, measure item height and set the viewport CSS variable
+        requestAnimationFrame(() => {
+            const first = track.querySelector('.submenu-item');
+            if (first) {
+                const h = first.getBoundingClientRect().height;
+                const viewport = track.closest('.xmb-submenu-viewport');
+                if (viewport) {
+                    viewport.style.setProperty('--item-h', h + 'px');
+                    viewport.style.height = (h * 3.5) + 'px';
+                }
+            }
+            // Slide to first item
+            slideToItem(0);
+        });
+    }
+
+    function setFocusedItem(catIndex, itemIndex) {
+        const track = document.getElementById('xmbSubmenuTrack');
+        if (!track) return;
+        const items = track.querySelectorAll('.submenu-item');
+        items.forEach(it => it.classList.remove('focused'));
+        if (items[itemIndex]) items[itemIndex].classList.add('focused');
+        slideToItem(itemIndex);
+        updateDetailContent(catIndex, itemIndex);
+        // Trigger video/image preview on hover
+        const label = items[itemIndex]?.querySelector('.submenu-item-title')?.textContent?.trim();
+        if (activeIndex === VIDEO_CAT_INDEX)   scheduleVideoPreview(label);
+        if (activeIndex === PROJECT_CAT_INDEX) scheduleImagePreview(label);
+    }
+
+    // Translate the track so the focused item is centered in the viewport
+    function slideToItem(itemIndex) {
+        const track = document.getElementById('xmbSubmenuTrack');
+        if (!track) return;
+        const first = track.querySelector('.submenu-item');
+        if (!first) return;
+        const itemH = first.getBoundingClientRect().height;
+        const viewport = track.closest('.xmb-submenu-viewport');
+        if (!viewport) return;
+        const viewH = viewport.getBoundingClientRect().height;
+        // Offset so the focused item sits at the vertical midpoint of the viewport
+        const offset = (viewH / 2) - (itemH / 2) - (itemIndex * itemH);
+        track.style.transform = `translateY(${offset}px)`;
     }
 
     // ── Detail Panel ───────────────────────────────
@@ -420,40 +433,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Submenu item tap on touch devices — open detail panel
     // (mouseenter doesn't fire on touch, so we wire a click handler inside buildSubmenu)
-    // This is handled already via the click on .xmb-category which calls navigateTo → showDetail
-
     function updateDetailContent(catIndex, subIndex) {
-        // Update detail body based on submenu item hover (optional extra info)
-        // For now just keep the category detail
+        // kept for compatibility — detail stays per-category
     }
 
     // ── Attach submenus to categories ─────────────
-    const categoryRail = document.querySelector('.xmb-categories');
-
-    // Remove existing submenus and rebuild on each activation
+    // (no-op: buildSubmenu now writes directly into #xmbSubmenuTrack)
     function activateCategory(index) {
-        // Remove old submenus
-        document.querySelectorAll('.xmb-submenu').forEach(s => s.remove());
-
-        const cat = categories[index];
-        if (!cat) return;
-
-        const submenu = buildSubmenu(index);
-        cat.appendChild(submenu);
+        buildSubmenu(index);
     }
 
     // ── Init ───────────────────────────────────────
-    updateCategories(0);
-    activateCategory(0);
-
-    // Override updateCategories to also rebuild submenu
-    const origUpdate = updateCategories;
-
-    // Patch category click to also activate submenu
+    // Patch category click — replaceWith clones so old listeners are dropped
     categories.forEach((cat, i) => {
-        // Remove old listener and add new one
         cat.replaceWith(cat.cloneNode(true));
     });
+
+    // Hoist constants so setFocusedItem and navigateToWithVideo can both use them
+    const VIDEO_CAT_INDEX   = 4;
+    const PROJECT_CAT_INDEX = 3;
 
     // Re-query after replace
     const freshCats = Array.from(document.querySelectorAll('.xmb-category'));
@@ -463,29 +461,20 @@ window.addEventListener('DOMContentLoaded', () => {
 
         freshCats.forEach((cat, i) => {
             cat.classList.remove('active', 'adjacent-left', 'adjacent-right', 'far-left', 'far-right');
-
             const diff = i - activeIndex;
             const n = freshCats.length;
-            // shortest circular distance
             let d = diff;
             if (d > n / 2) d -= n;
             if (d < -n / 2) d += n;
-
-            if (d === 0) cat.classList.add('active');
+            if (d === 0)       cat.classList.add('active');
             else if (d === -1) cat.classList.add('adjacent-left');
             else if (d === 1)  cat.classList.add('adjacent-right');
             else if (d < -1)   cat.classList.add('far-left');
             else               cat.classList.add('far-right');
         });
 
-        // Rebuild submenu
-        document.querySelectorAll('.xmb-submenu').forEach(s => s.remove());
-        const activeCat = freshCats[activeIndex];
-        if (activeCat) {
-            const submenu = buildSubmenu(activeIndex);
-            activeCat.appendChild(submenu);
-        }
-
+        // Rebuild the submenu into the static track element
+        buildSubmenu(activeIndex);
         showDetail(activeIndex);
     }
 
@@ -494,33 +483,23 @@ window.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'ArrowLeft')  { navigateToWithVideo(activeIndex - 1); return; }
         if (e.key === 'ArrowRight') { navigateToWithVideo(activeIndex + 1); return; }
 
-        const submenu = document.querySelector('.xmb-submenu');
-        if (!submenu) return;
-        const items = Array.from(submenu.querySelectorAll('.submenu-item'));
-        const focused = submenu.querySelector('.submenu-item.focused');
+        const track = document.getElementById('xmbSubmenuTrack');
+        if (!track) return;
+        const items = Array.from(track.querySelectorAll('.submenu-item'));
+        const focused = track.querySelector('.submenu-item.focused');
         let fi = items.indexOf(focused);
         if (fi === -1) fi = 0;
 
         if (e.key === 'ArrowDown') {
             e.preventDefault();
-            items.forEach(it => it.classList.remove('focused'));
-            items[(fi + 1) % items.length].classList.add('focused');
-            // trigger preview if on video or projects category
-            const nextLabel = items[(fi + 1) % items.length].querySelector('.submenu-item-title')?.textContent?.trim();
-            if (activeIndex === 4) scheduleVideoPreview(nextLabel);
-            if (activeIndex === 3) scheduleImagePreview(nextLabel);
+            setFocusedItem(activeIndex, (fi + 1) % items.length);
         }
         if (e.key === 'ArrowUp') {
             e.preventDefault();
-            items.forEach(it => it.classList.remove('focused'));
-            items[((fi - 1) + items.length) % items.length].classList.add('focused');
-            // trigger preview if on video or projects category
-            const prevLabel = items[((fi - 1) + items.length) % items.length].querySelector('.submenu-item-title')?.textContent?.trim();
-            if (activeIndex === 4) scheduleVideoPreview(prevLabel);
-            if (activeIndex === 3) scheduleImagePreview(prevLabel);
+            setFocusedItem(activeIndex, ((fi - 1) + items.length) % items.length);
         }
         if (e.key === 'Enter') {
-            const f = submenu.querySelector('.submenu-item.focused') || items[0];
+            const f = track.querySelector('.submenu-item.focused') || items[0];
             if (f && f.href) window.open(f.href, f.target || '_self');
         }
     });
@@ -723,71 +702,26 @@ window.addEventListener('DOMContentLoaded', () => {
         vidTimer = setTimeout(() => playVideoBg(src), 800);
     }
 
-    // Hook into submenu mouseenter — we patch buildSubmenu's mouseenter listener.
-    // We do this by overriding the per-item mouseenter inside buildSubmenu.
-    // Since buildSubmenu is already defined above, we wrap the item mouseenter
-    // inside navigateTo's submenu rebuild instead.
-
-    // Override navigateTo to also wire video previews on the video category submenu
+    // Override navigateTo to also handle video/image bg previews
     const _origNavigateTo = navigateTo;
 
     function navigateToWithVideo(newIndex) {
         _origNavigateTo(newIndex);
 
-        const VIDEO_CAT_INDEX   = 4;
-        const PROJECT_CAT_INDEX = 3;
+        if (newIndex !== VIDEO_CAT_INDEX)   stopVideoBg();
+        if (newIndex !== PROJECT_CAT_INDEX) hideImageBg();
 
-        if (newIndex !== VIDEO_CAT_INDEX) {
-            // Left the video category — stop preview
-            stopVideoBg();
-        }
-
-        if (newIndex !== PROJECT_CAT_INDEX) {
-            // Left the projects category — hide image bg
-            hideImageBg();
-        }
-
-        if (newIndex !== VIDEO_CAT_INDEX && newIndex !== PROJECT_CAT_INDEX) {
-            return;
-        }
-
-        // We're on the video or projects category — attach hover logic to submenu items
-        // Small rAF to ensure the submenu has been appended by navigateTo
-        requestAnimationFrame(() => {
-            const submenu = document.querySelector('.xmb-submenu');
-            if (!submenu) return;
-
-            const items = submenu.querySelectorAll('.submenu-item');
-            items.forEach(item => {
-                const label = item.querySelector('.submenu-item-title')?.textContent?.trim();
-
-                item.addEventListener('mouseenter', () => {
-                    if (activeIndex === VIDEO_CAT_INDEX)   scheduleVideoPreview(label);
-                    if (activeIndex === PROJECT_CAT_INDEX) scheduleImagePreview(label);
-                });
-
-                item.addEventListener('mouseleave', () => {
-                    // Cancel pending timer only; keep showing if already started
-                    clearTimeout(vidTimer);
-                    clearTimeout(imgTimer);
-                    vidTimer = null;
-                    imgTimer = null;
-                });
+        // Auto-preview the first item when landing on video or projects
+        if (newIndex === VIDEO_CAT_INDEX || newIndex === PROJECT_CAT_INDEX) {
+            requestAnimationFrame(() => {
+                const track = document.getElementById('xmbSubmenuTrack');
+                if (!track) return;
+                const firstLabel = track.querySelector('.submenu-item.focused .submenu-item-title')?.textContent?.trim();
+                if (newIndex === VIDEO_CAT_INDEX)   scheduleVideoPreview(firstLabel);
+                if (newIndex === PROJECT_CAT_INDEX) scheduleImagePreview(firstLabel);
             });
-
-            // Auto-preview the first (focused) item after a short delay
-            const firstLabel = submenu.querySelector('.submenu-item.focused .submenu-item-title')?.textContent?.trim();
-            if (activeIndex === VIDEO_CAT_INDEX)   scheduleVideoPreview(firstLabel);
-            if (activeIndex === PROJECT_CAT_INDEX) scheduleImagePreview(firstLabel);
-        });
+        }
     }
-
-    // Patch keydown handler to use video-aware navigation
-    // We re-bind arrow keys using the wrapped version
-    // (handled by the main keydown listener below)
-
-    // Also patch the ↑↓ submenu navigation to trigger video previews on the video category
-    // (handled inline inside the main keydown listener below)
 
     // ── Initial state — respect URL hash ──────────
     const hashMap = { '#about': 1, '#skills': 2, '#projects': 3, '#video': 4, '#contact': 5 };

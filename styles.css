@@ -134,10 +134,10 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.9rem 2.5rem;
+    padding: clamp(0.6rem, 1.2vh, 1.1rem) clamp(1.2rem, 2.5vw, 3rem);
     background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.88rem;
+    font-size: clamp(0.85rem, 1.15vw, 1.15rem);
     letter-spacing: 0.08em;
     color: rgba(255,255,255,0.7);
     pointer-events: none;
@@ -211,10 +211,20 @@ html, body {
     inset: 0;
     z-index: 10;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 30vh;
+    align-items: center;
+    justify-content: center;
     pointer-events: none;
+}
+
+/* The single centered block containing rail + submenu */
+.xmb-center-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.8rem, 4vh, 3.5rem);
+    pointer-events: all;
+    /* nudge left so the detail panel on the right doesn't overlap */
+    transform: translateX(-8vw);
 }
 
 /* ── Category Rail (horizontal) ── */
@@ -222,20 +232,19 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0px;
-    padding: 0 4rem;
-    pointer-events: all;
+    padding: 0 2vw;
     position: relative;
+    width: 100%;
 }
 
 .xmb-category {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.8rem;
+    gap: clamp(0.4rem, 1vh, 0.9rem);
     cursor: pointer;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 0 2.5rem;
+    padding: 0 clamp(1rem, 2vw, 3rem);
     position: relative;
     flex-shrink: 0;
 }
@@ -244,11 +253,11 @@ html, body {
 .xmb-category::before {
     content: '';
     position: absolute;
-    bottom: -4rem;
+    bottom: clamp(-3rem, -5vh, -4rem);
     left: 50%;
     transform: translateX(-50%);
     width: 1px;
-    height: 4rem;
+    height: clamp(3rem, 5vh, 4rem);
     background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -259,8 +268,8 @@ html, body {
 }
 
 .category-icon {
-    width: 80px;
-    height: 80px;
+    width: clamp(56px, 7vw, 100px);
+    height: clamp(56px, 7vw, 100px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -270,22 +279,22 @@ html, body {
 }
 
 .category-icon svg {
-    width: 56px;
-    height: 56px;
+    width: clamp(38px, 4.8vw, 68px);
+    height: clamp(38px, 4.8vw, 68px);
     fill: rgba(255,255,255,0.35);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .category-icon img {
-    width: 36px;
-    height: 36px;
+    width: clamp(38px, 4.8vw, 68px);
+    height: clamp(38px, 4.8vw, 68px);
     opacity: 0.35;
     transition: all 0.35s ease;
 }
 
 .category-label {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 0.85rem;
+    font-size: clamp(0.88rem, 1.35vw, 1.25rem);
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -337,25 +346,50 @@ html, body {
     text-shadow: 0 0 12px rgba(255,255,255,0.8);
 }
 
-/* ── Submenu ── */
-.xmb-submenu {
-    position: absolute;
-    top: calc(100% + 5rem);
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    pointer-events: all;
-    min-width: 420px;
-    z-index: 20;
+/* ── Submenu viewport + scrolling track ── */
+.xmb-submenu-viewport {
+    width: clamp(280px, 38vw, 540px);
+    /* Show ~3.5 rows — partial rows above/below hint there's more */
+    height: calc(var(--item-h, 68px) * 3.5);
+    overflow: hidden;
+    position: relative;
+    /* Top/bottom fade so clipped items dissolve naturally */
+    -webkit-mask-image: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(0,0,0,0.6) 14%,
+        black 28%,
+        black 72%,
+        rgba(0,0,0,0.6) 86%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(0,0,0,0.6) 14%,
+        black 28%,
+        black 72%,
+        rgba(0,0,0,0.6) 86%,
+        transparent 100%
+    );
 }
 
+/* Sliding track — JS sets transform to keep focused item centred */
+.xmb-submenu-track {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* ── Submenu item ──
+   Each item has a fixed height set via --item-h so JS can
+   calculate the correct track offset precisely.               */
 .submenu-item {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
-    padding: 0.75rem 1.4rem;
+    gap: clamp(0.8rem, 1.5vw, 1.4rem);
+    padding: clamp(0.55rem, 1.2vh, 0.9rem) clamp(0.9rem, 1.8vw, 1.6rem);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 4px;
@@ -384,8 +418,8 @@ html, body {
 }
 
 .submenu-item-icon {
-    width: 36px;
-    height: 36px;
+    width: clamp(28px, 3vw, 42px);
+    height: clamp(28px, 3vw, 42px);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -393,8 +427,8 @@ html, body {
 }
 
 .submenu-item-icon svg {
-    width: 26px;
-    height: 26px;
+    width: clamp(20px, 2.1vw, 30px);
+    height: clamp(20px, 2.1vw, 30px);
     fill: rgba(255,255,255,0.5);
     transition: fill 0.2s ease;
 }
@@ -410,7 +444,7 @@ html, body {
 
 .submenu-item-title {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 1.15rem;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
     font-weight: 600;
     letter-spacing: 0.06em;
     color: rgba(255,255,255,0.65);
@@ -420,10 +454,7 @@ html, body {
 
 .submenu-item-sub {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.3);
-    letter-spacing: 0.06em;
-    margin-top: 2px;
+    font-size: clamp(0.78rem, 1.05vw, 1.08rem);
 }
 
 .submenu-item:hover .submenu-item-title,
@@ -477,15 +508,15 @@ html, body {
     position: fixed;
     top: 0;
     right: 0;
-    width: 480px;
+    width: clamp(320px, 32vw, 580px);
     height: 100%;
     z-index: 30;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 5rem 3rem 3rem;
+    padding: clamp(3rem, 6vh, 6rem) clamp(1.5rem, 2.5vw, 3.5rem) clamp(2rem, 3vh, 3rem);
     pointer-events: none;
-    transform: translateX(520px);
+    transform: translateX(110%);
     transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
                 opacity  0.35s ease;
 }
@@ -501,7 +532,7 @@ html, body {
 
 .detail-title {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 2.2rem;
+    font-size: clamp(1.9rem, 3.3vw, 3.6rem);
     font-weight: 700;
     letter-spacing: 0.06em;
     color: #fff;
@@ -527,7 +558,7 @@ html, body {
 
 .detail-body {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 1.05rem;
+    font-size: clamp(1.05rem, 1.45vw, 1.45rem);
     line-height: 1.75;
     color: rgba(255,255,255,0.65);
     flex: 1;
@@ -549,8 +580,7 @@ html, body {
     border: 1px solid rgba(100,160,255,0.35);
     border-radius: 3px;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: rgba(160,210,255,0.7);
+    font-size: 0.92rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     background: rgba(100,160,255,0.06);
@@ -569,7 +599,7 @@ html, body {
     border: 1px solid rgba(100,160,255,0.5);
     border-radius: 4px;
     font-family: 'Rajdhani', sans-serif;
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -602,8 +632,8 @@ html, body {
 }
 
 .detail-profile-img {
-    width: 88px;
-    height: 88px;
+    width: clamp(64px, 7vw, 100px);
+    height: clamp(64px, 7vw, 100px);
     border-radius: 50%;
     object-fit: cover;
     object-position: top;
@@ -613,14 +643,14 @@ html, body {
 
 .detail-profile-info .name {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 1.35rem;
+    font-size: clamp(1.3rem, 1.95vw, 1.95rem);
     font-weight: 700;
     color: #fff;
 }
 
 .detail-profile-info .handle {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
+    font-size: clamp(0.8rem, 1.1vw, 1.15rem);
     color: rgba(160,210,255,0.65);
     letter-spacing: 0.06em;
 }
@@ -641,10 +671,7 @@ html, body {
 
 .detail-skill-label {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    color: rgba(160,210,255,0.6);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.9rem;
 }
 
 .detail-skill-bar {
@@ -685,52 +712,49 @@ html, body {
 
 .detail-edu-item .deg {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 0.82rem;
+    font-size: 1rem;
     font-weight: 600;
     color: rgba(255,255,255,0.85);
 }
 
 .detail-edu-item .school {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.58rem;
-    color: rgba(160,210,255,0.6);
-    letter-spacing: 0.04em;
-    margin-top: 0.2rem;
+    font-size: 0.75rem;
 }
 
 /* ── D-Pad Hint ── */
 .xmb-dpad-hint {
     position: fixed;
-    bottom: 2rem;
+    bottom: clamp(1rem, 2.5vh, 2.5rem);
     left: 50%;
     transform: translateX(-50%);
     z-index: 50;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
     pointer-events: none;
 }
 
 .dpad-btn {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.45rem;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
+    font-size: clamp(0.62rem, 0.85vw, 0.88rem);
     color: rgba(255,255,255,0.35);
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 .dpad-key {
-    width: 24px;
-    height: 24px;
+    width: clamp(20px, 2vw, 28px);
+    height: clamp(20px, 2vw, 28px);
     border: 1px solid rgba(255,255,255,0.3);
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.65rem;
+    font-size: clamp(0.55rem, 0.75vw, 0.75rem);
     color: rgba(255,255,255,0.5);
     background: rgba(255,255,255,0.05);
     font-family: 'Rajdhani', sans-serif;
@@ -739,14 +763,14 @@ html, body {
 
 /* Circle / Cross buttons */
 .ps-btn {
-    width: 26px;
-    height: 26px;
+    width: clamp(22px, 2.2vw, 30px);
+    height: clamp(22px, 2.2vw, 30px);
     border-radius: 50%;
     border: 1.5px solid rgba(255,255,255,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
+    font-size: clamp(0.65rem, 0.85vw, 0.9rem);
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
     flex-shrink: 0;
@@ -766,10 +790,7 @@ html, body {
 
 .page-label-text {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.25);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 0.95rem;
 }
 
 /* ── Background Video Player ── */
@@ -966,8 +987,13 @@ html, body {
     animation: xmbSlideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-.xmb-submenu {
-    animation: xmbSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+.xmb-submenu-viewport {
+    animation: xmbFadeSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes xmbFadeSlideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ── Hover sound ripple effect ── */
@@ -994,547 +1020,95 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════════
-   RESPONSIVE — ALL DEVICES
-   Breakpoints:
-   xs:  < 480px   (phones portrait)
-   sm:  480–767px (phones landscape / large phones)
-   md:  768–1023px (tablets portrait)
-   lg:  1024–1279px (tablets landscape / small laptops)
-   xl:  1280px+   (laptops & desktops — base styles above)
+   RESPONSIVE — structural layout switches only.
+   Sizing (icons, fonts, spacing) is handled by
+   clamp() in the base styles above.
    ═══════════════════════════════════════════════ */
 
-/* ── Large Desktop (1440px+) — give things a little more room ── */
-@media (min-width: 1440px) {
-    .xmb-layout {
-        padding-top: 32vh;
+/* ── Tablet & mobile (≤ 1023px): detail panel becomes a bottom sheet ── */
+@media (max-width: 1023px) {
+    /* On mobile the detail is at the bottom, so don't nudge the center block left */
+    .xmb-center-block {
+        transform: translateX(0);
     }
-
-    .xmb-category {
-        padding: 0 3rem;
-    }
-
-    .xmb-submenu {
-        min-width: 480px;
-    }
-
-    .xmb-detail {
-        width: 520px;
-    }
-
-    .detail-title {
-        font-size: 2.6rem;
-    }
-}
-
-/* ── Laptop / small desktop (1024–1279px) ── */
-@media (max-width: 1279px) {
-    .xmb-category {
-        padding: 0 2rem;
-    }
-
-    .category-icon {
-        width: 70px;
-        height: 70px;
-    }
-
-    .category-icon svg {
-        width: 48px;
-        height: 48px;
-    }
-
-    .xmb-detail {
-        width: 420px;
-        padding: 4rem 2.2rem 2.2rem;
-    }
-
-    .xmb-submenu {
-        min-width: 380px;
-    }
-}
-
-/* ── Tablet landscape / small laptop (1024px) ── */
-@media (max-width: 1024px) {
-    .xmb-layout {
-        padding-top: 28vh;
-    }
-
-    .xmb-category {
-        padding: 0 1.6rem;
-    }
-
-    .category-icon {
-        width: 64px;
-        height: 64px;
-    }
-
-    .category-icon svg {
-        width: 44px;
-        height: 44px;
-    }
-
-    .category-label {
-        font-size: 0.75rem;
-    }
-
-    .xmb-submenu {
-        min-width: 340px;
-        top: calc(100% + 4rem);
-    }
-
-    .xmb-detail {
-        width: 360px;
-        padding: 3.5rem 1.8rem 1.8rem;
-    }
-
-    .detail-title {
-        font-size: 1.9rem;
-    }
-
-    .detail-body {
-        font-size: 0.95rem;
-    }
-}
-
-/* ── Tablet portrait (768–1023px) — iPad, Android tablets ── */
-@media (max-width: 1023px) and (min-width: 768px) {
-    .xmb-layout {
-        padding-top: 26vh;
-    }
-
-    .xmb-categories {
-        padding: 0 1.5rem;
-    }
-
-    .xmb-category {
-        padding: 0 1.4rem;
-    }
-
-    .category-icon {
-        width: 60px;
-        height: 60px;
-    }
-
-    .category-icon svg {
-        width: 40px;
-        height: 40px;
-    }
-
-    .category-label {
-        font-size: 0.7rem;
-        letter-spacing: 0.1em;
-    }
-
-    /* Submenu shifts to center of screen, not off to one side */
-    .xmb-submenu {
-        min-width: 300px;
-        top: calc(100% + 3.5rem);
-    }
-
-    .submenu-item-title {
-        font-size: 1rem;
-    }
-
-    .submenu-item-sub {
-        font-size: 0.65rem;
-    }
-
-    /* Detail panel slides up from bottom on tablets */
     .xmb-detail {
         width: 100%;
         height: auto;
-        max-height: 50vh;
+        max-height: 55vh;
         top: auto;
         bottom: 0;
         right: 0;
-        transform: translateY(100%);
-        padding: 1.4rem 1.8rem 1.8rem;
-        background: rgba(5, 5, 20, 0.94);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(100,160,255,0.18);
-        border-radius: 16px 16px 0 0;
-        overflow-y: auto;
-    }
-
-    .xmb-detail.visible {
-        transform: translateY(0);
-    }
-
-    .detail-close-btn { display: flex; }
-
-    .detail-title { font-size: 1.7rem; }
-    .detail-body  { font-size: 0.9rem; }
-
-    /* D-pad hints — hide text labels, keep icons */
-    .dpad-btn span { display: none; }
-
-    /* Volume control — move above shelf */
-    .xmb-vol {
-        bottom: 4rem;
-        right: 1.5rem;
-    }
-}
-
-/* ── Large phones landscape / phablets (480–767px) ── */
-@media (max-width: 767px) and (min-width: 480px) {
-    .xmb-layout {
-        padding-top: 22vh;
-    }
-
-    .xmb-statusbar {
-        padding: 0.7rem 1.4rem;
-        font-size: 0.78rem;
-    }
-
-    .xmb-categories {
-        padding: 0 0.8rem;
-        gap: 0;
-    }
-
-    .xmb-category {
-        padding: 0 1rem;
-        gap: 0.5rem;
-    }
-
-    .category-icon {
-        width: 52px;
-        height: 52px;
-    }
-
-    .category-icon svg {
-        width: 34px;
-        height: 34px;
-    }
-
-    .category-label {
-        font-size: 0.62rem;
-        letter-spacing: 0.08em;
-    }
-
-    /* Scale adjustments for adjacent/far */
-    .xmb-category.adjacent-left,
-    .xmb-category.adjacent-right {
-        transform: scale(0.82);
-    }
-
-    .xmb-category.far-left,
-    .xmb-category.far-right {
-        transform: scale(0.65);
-        opacity: 0.35;
-    }
-
-    .xmb-category.active {
-        transform: scale(1.1);
-    }
-
-    .xmb-submenu {
-        min-width: 280px;
-        top: calc(100% + 3rem);
-    }
-
-    .submenu-item {
-        padding: 0.65rem 1rem;
-        gap: 0.9rem;
-    }
-
-    .submenu-item-title { font-size: 0.95rem; }
-    .submenu-item-sub   { font-size: 0.62rem; }
-
-    .submenu-item-icon { width: 28px; height: 28px; }
-    .submenu-item-icon svg { width: 20px; height: 20px; }
-
-    /* Detail panel — bottom sheet */
-    .xmb-detail {
-        width: 100%;
-        height: auto;
-        max-height: 52vh;
-        top: auto;
-        bottom: 0;
-        right: 0;
-        transform: translateY(100%);
-        padding: 1.2rem 1.4rem 1.4rem;
-        background: rgba(5, 5, 20, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(100,160,255,0.18);
-        border-radius: 14px 14px 0 0;
-        overflow-y: auto;
-    }
-
-    .xmb-detail.visible {
-        transform: translateY(0);
-    }
-
-    .detail-close-btn { display: flex; }
-
-    .detail-title { font-size: 1.5rem; }
-    .detail-body  { font-size: 0.88rem; }
-
-    /* D-pad hints — tighten up */
-    .xmb-dpad-hint {
-        gap: 1rem;
-        bottom: 1.2rem;
-    }
-
-    .dpad-btn { font-size: 0.6rem; gap: 0.3rem; }
-    .dpad-key { width: 20px; height: 20px; font-size: 0.55rem; }
-    .ps-btn   { width: 22px; height: 22px; font-size: 0.65rem; }
-
-    .xmb-page-label { display: none; }
-
-    /* Volume control */
-    .xmb-vol {
-        bottom: 3.8rem;
-        right: 1rem;
-    }
-
-    .vol-track { width: 70px; }
-}
-
-/* ── Phone portrait (< 480px) — iPhone SE, small Androids ── */
-@media (max-width: 479px) {
-    .xmb-layout {
-        /* On short phones avoid pushing content below fold */
-        padding-top: max(18vh, 5rem);
-    }
-
-    .xmb-statusbar {
-        padding: 0.55rem 1rem;
-        font-size: 0.7rem;
-    }
-
-    /* Hide WLAN label text, keep icon */
-    .xmb-statusbar .status-left span:not(.signal-bars) {
-        display: none;
-    }
-
-    .xmb-categories {
-        padding: 0 0.4rem;
-        gap: 0;
-    }
-
-    .xmb-category {
-        padding: 0 0.55rem;
-        gap: 0.35rem;
-    }
-
-    /* Hide label text on smallest screens — icons only */
-    .category-label {
-        display: none;
-    }
-
-    .category-icon {
-        width: 44px;
-        height: 44px;
-    }
-
-    .category-icon svg {
-        width: 28px;
-        height: 28px;
-    }
-
-    .xmb-category.adjacent-left,
-    .xmb-category.adjacent-right {
-        transform: scale(0.8);
-    }
-
-    .xmb-category.far-left,
-    .xmb-category.far-right {
-        transform: scale(0.6);
-        opacity: 0.3;
-    }
-
-    .xmb-category.active {
-        transform: scale(1.08);
-    }
-
-    /* Vertical connecting line shorter */
-    .xmb-category::before {
-        bottom: -2.5rem;
-        height: 2.5rem;
-    }
-
-    /* Submenu: full-width, no min-width constraint */
-    .xmb-submenu {
-        min-width: 0;
-        width: calc(100vw - 2rem);
-        left: 50%;
-        transform: translateX(-50%);
-        top: calc(100% + 2.5rem);
-        padding: 0 0.2rem;
-    }
-
-    .submenu-item {
-        padding: 0.7rem 0.9rem;
-        gap: 0.75rem;
-        /* Bigger touch targets on mobile */
-        min-height: 48px;
-    }
-
-    .submenu-item-icon { width: 26px; height: 26px; }
-    .submenu-item-icon svg { width: 18px; height: 18px; }
-    .submenu-item-title { font-size: 0.92rem; }
-    .submenu-item-sub   { font-size: 0.6rem; }
-
-    /* Arrow hidden on mobile — no space */
-    .submenu-arrow { display: none; }
-
-    /* Detail panel — taller bottom sheet on phones */
-    .xmb-detail {
-        width: 100%;
-        height: auto;
-        max-height: 58vh;
-        top: auto;
-        bottom: 0;
-        right: 0;
-        transform: translateY(100%);
-        padding: 1rem 1.1rem 5rem; /* bottom pad for home bar */
-        background: rgba(4, 4, 18, 0.97);
+        transform: translateY(110%);
+        padding: 1.2rem 1.5rem max(5rem, env(safe-area-inset-bottom, 5rem));
+        background: rgba(4, 4, 18, 0.96);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
-        border-top: 1px solid rgba(100,160,255,0.15);
-        border-radius: 16px 16px 0 0;
+        border-top: 1px solid rgba(100,160,255,0.18);
+        border-left: none;
+        border-radius: 18px 18px 0 0;
         overflow-y: auto;
-        /* safe area for notched phones */
-        padding-bottom: max(5rem, env(safe-area-inset-bottom, 5rem));
+        justify-content: flex-start;
     }
 
     .xmb-detail.visible {
         transform: translateY(0);
     }
 
-    /* Drag handle indicator on the bottom sheet */
+    /* Drag handle */
     .xmb-detail::before {
         content: '';
         display: block;
-        width: 36px;
+        width: 40px;
         height: 4px;
-        background: rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.18);
         border-radius: 2px;
         margin: 0 auto 1rem;
+        flex-shrink: 0;
     }
 
-    .detail-title { font-size: 1.35rem; }
-    .detail-body  { font-size: 0.85rem; line-height: 1.65; }
-    .detail-tag   { font-size: 0.6rem; padding: 0.2rem 0.55rem; }
-
-    .detail-profile-img { width: 64px; height: 64px; }
-    .detail-profile-info .name   { font-size: 1.05rem; }
-    .detail-profile-info .handle { font-size: 0.65rem; }
-
-    /* D-pad hints — very minimal */
-    .xmb-dpad-hint {
-        bottom: 0.8rem;
-        gap: 0.7rem;
-    }
-
-    .dpad-btn { font-size: 0; gap: 0; } /* hide text labels completely */
-    .dpad-key { width: 20px; height: 20px; font-size: 0.6rem; }
-    .ps-btn   { width: 22px; height: 22px; font-size: 0.65rem; }
-
-    .xmb-page-label { display: none; }
-
-    /* Status bar — right side compact */
-    .xmb-statusbar .status-right {
-        gap: 0.6rem;
-    }
-
-    /* Volume slider — compact */
-    .xmb-vol {
-        bottom: 3.5rem;
-        right: 0.8rem;
-        padding: 0.35rem 0.65rem 0.35rem 0.4rem;
-        gap: 0.4rem;
-    }
-
-    .vol-track { width: 60px; }
-    .vol-value { font-size: 0.58rem; min-width: 18px; }
-    .vol-icon  { width: 15px; height: 15px; }
-
-    /* Glow blobs — reduce size on mobile for perf */
-    .xmb-glow-1 { width: 300px; height: 300px; }
-    .xmb-glow-2 { width: 200px; height: 200px; }
-    .xmb-glow-3 { width: 150px; height: 150px; }
+    .detail-close-btn { display: flex; }
+    .xmb-page-label   { display: none; }
+    .dpad-btn span    { display: none; }
 }
 
-/* ── Very small phones (< 360px) — Galaxy A series, older Androids ── */
-@media (max-width: 359px) {
-    .xmb-layout {
-        padding-top: max(15vh, 4.5rem);
-    }
-
-    .xmb-category {
-        padding: 0 0.4rem;
-    }
-
-    .category-icon {
-        width: 38px;
-        height: 38px;
-    }
-
-    .category-icon svg {
-        width: 24px;
-        height: 24px;
-    }
-
-    .xmb-submenu {
-        width: calc(100vw - 1rem);
-    }
-
-    .submenu-item {
-        padding: 0.65rem 0.7rem;
-    }
-
-    .detail-title { font-size: 1.2rem; }
-}
-
-/* ── Landscape orientation on phones ── */
-@media (max-height: 500px) and (orientation: landscape) {
-    .xmb-layout {
-        padding-top: 8vh;
-    }
-
-    .category-icon {
-        width: 40px;
-        height: 40px;
-    }
-
-    .category-icon svg {
-        width: 26px;
-        height: 26px;
-    }
-
+/* ── Small phones (≤ 480px): labels off, submenu full-width ── */
+@media (max-width: 480px) {
     .category-label { display: none; }
+    .submenu-arrow  { display: none; }
 
+    .xmb-submenu-viewport {
+        width: calc(100vw - 1.5rem);
+    }
+
+    .submenu-item { min-height: 48px; } /* comfortable touch targets */
+
+    /* Hide WLAN text, keep signal bars */
+    .xmb-statusbar .status-left > span:last-child { display: none; }
+
+    .xmb-glow-1 { width: 260px; height: 260px; }
+    .xmb-glow-2 { width: 180px; height: 180px; }
+    .xmb-glow-3 { display: none; }
+}
+
+/* ── Phone landscape (short viewport): tighten vertical layout ── */
+@media (max-height: 500px) and (orientation: landscape) {
+    .category-label    { display: none; }
     .xmb-category::before { display: none; }
 
-    /* Submenu appears to the right of center in landscape to avoid
-       overlapping the category rail */
-    .xmb-submenu {
-        top: calc(100% + 1.5rem);
-        min-width: 0;
-        width: 260px;
-    }
-
-    .submenu-item {
-        padding: 0.5rem 0.9rem;
-        min-height: 42px;
-    }
-
-    /* Detail panel — side panel in landscape */
+    /* Side panel instead of bottom sheet in landscape */
     .xmb-detail {
-        width: 320px;
+        width: clamp(280px, 38vw, 380px);
         height: 100%;
         max-height: none;
         top: 0;
         bottom: auto;
         right: 0;
-        transform: translateX(340px);
-        padding: 3.5rem 1.4rem 1.4rem;
+        transform: translateX(110%);
+        padding: 3rem 1.4rem 1.4rem;
         border-top: none;
         border-left: 1px solid rgba(100,160,255,0.15);
         border-radius: 0;
-        overflow-y: auto;
+        justify-content: center;
     }
 
     .xmb-detail.visible {
@@ -1542,9 +1116,4 @@ html, body {
     }
 
     .xmb-detail::before { display: none; }
-
-    .xmb-dpad-hint { bottom: 0.5rem; }
-
-    .xmb-vol { bottom: 2.5rem; }
 }
-
