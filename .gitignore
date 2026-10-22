@@ -1,1 +1,5 @@
 ﻿node_modules/
+
+# Large video files over GitHub's 100MB limit
+vids/Basura Short Film.mp4
+vids/4 BSCS3A_Basura (1).mp4

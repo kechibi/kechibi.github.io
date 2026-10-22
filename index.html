@@ -2,74 +2,197 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Andre Jose C. Ruiz — Front-end developer and Computer Science student from Davao, Philippines.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Andre Jose C. Ruiz — Front-end developer and Computer Science graduate from Davao, Philippines.">
     <title>Andre's Portfolio</title>
     <link href="styles.css" rel="stylesheet">
-    <script>if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.add('dark-mode');</script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-links" id="navLinks">
-                <a class="nav-link" href="index.html">Home</a>
-                <a class="nav-link" href="about.html">About</a>
-                <a class="nav-link" href="projects.html">Projects</a>
-            </div>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
-            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
-                <span class="sun-icon">☀️</span>
-                <span class="moon-icon">🌙</span>
-            </button>
+
+    <!-- ── XMB Background ── -->
+    <div class="xmb-bg">
+        <!-- Animated wave ribbons -->
+        <div class="xmb-wave">
+            <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,450 C200,300 400,600 600,400 C800,200 1000,550 1200,350 C1400,150 1440,300 1440,300 L1440,900 L0,900 Z"
+                      fill="rgba(100,160,255,0.15)" />
+                <path d="M0,550 C250,350 500,650 750,450 C1000,250 1200,600 1440,400 L1440,900 L0,900 Z"
+                      fill="rgba(80,120,220,0.08)" />
+            </svg>
         </div>
-    </nav>
+        <div class="xmb-wave">
+            <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,300 C300,450 600,200 900,380 C1100,500 1300,250 1440,350 L1440,900 L0,900 Z"
+                      fill="rgba(60,100,200,0.1)" />
+            </svg>
+        </div>
 
-    <div class="dark-mode-overlay"></div>
-    <div class="light-mode-overlay"></div>
-    <div class="stars" id="stars"></div>
-    <canvas id="lightParticles" class="light-particles"></canvas>
+        <!-- Glow blobs -->
+        <div class="xmb-glow xmb-glow-1"></div>
+        <div class="xmb-glow xmb-glow-2"></div>
+        <div class="xmb-glow xmb-glow-3"></div>
+    </div>
 
-    <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-image">
-                <a href="https://drive.google.com/file/d/1x3B9w9IaHD9bfQAEtVFk5vk6YMQOyvvl/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="profile-img-link" aria-label="View Andre's resume on Google Drive">
-                    <img class="profile-img" src="images/andre.png" alt="Andre Jose C. Ruiz">
-                </a>
+    <!-- Scanlines -->
+    <div class="xmb-scanlines"></div>
+
+    <!-- ── Background Video Player (for video category previews) ── -->
+    <div class="xmb-vid-bg" id="xmbVidBg">
+        <video id="xmbVidEl" playsinline loop preload="none"></video>
+        <div class="xmb-vid-overlay"></div>
+    </div>
+
+    <!-- ── Background Image Preview (for project category) ── -->
+    <div class="xmb-img-bg" id="xmbImgBg">
+        <div class="xmb-img-art" id="xmbImgArt"></div>
+        <div class="xmb-img-overlay"></div>
+    </div>
+
+    <!-- ── Video Volume Control ── -->
+    <div class="xmb-vol" id="xmbVol" aria-label="Video volume" role="group">
+        <button class="vol-icon-btn" id="volIconBtn" aria-label="Toggle mute" title="Toggle mute">
+            <svg class="vol-icon vol-icon-on" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            <svg class="vol-icon vol-icon-off" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+            </svg>
+        </button>
+        <div class="vol-track" title="Volume">
+            <input class="vol-slider" id="volSlider" type="range" min="0" max="100" value="70"
+                   aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
+            <div class="vol-fill" id="volFill"></div>
+        </div>
+        <span class="vol-value" id="volValue">70</span>
+    </div>
+
+    <!-- ── Status Bar ── -->
+    <div class="xmb-statusbar">
+        <div class="status-left">
+            <!-- Signal bars -->
+            <div class="signal-bars" aria-hidden="true">
+                <div class="signal-bar"></div>
+                <div class="signal-bar"></div>
+                <div class="signal-bar"></div>
+                <div class="signal-bar"></div>
+                <div class="signal-bar"></div>
             </div>
-            <div class="hero-text">
-                <h1 class="code-bracket">&lt; andre &gt;</h1>
-                <p class="hero-description">A Computer Science graduate from Davao, Philippines, who focuses on creating front-end experiences and loves coding with JavaScript, Vite, CSS, HTML, Tailwind, and more. </p>
-                <div class="code-snippet" aria-hidden="true">
-                    <code class="code-line"><span class="code-tag">&lt;div</span> <span class="code-attribute">class=</span><span class="code-string">"developer"</span><span class="code-tag">&gt;</span></code>
-                    <code class="code-line indent-1"><span class="code-property">name:</span> <span class="code-value">"Andre";</span></code>
-                    <code class="code-line indent-1"><span class="code-property">stack:</span> <span class="code-value">["HTML", "CSS", "JS"];</span></code>
-                    <code class="code-line indent-1"><span class="code-property">tools:</span> <span class="code-value">["Vite", "Tailwind"];</span></code>
-                    <code class="code-line indent-1"><span class="code-property">location:</span> <span class="code-value">"Davao, PH";</span></code>
-                    <code class="code-line"><span class="code-tag">&lt;/div&gt;</span></code>
+            <span>WLAN</span>
+        </div>
+        <div class="status-right">
+            <span id="xmb-date"></span>
+            <span id="xmb-clock"></span>
+            <!-- Battery -->
+            <div class="battery-icon" aria-hidden="true">
+                <div class="bat-body"><div class="bat-fill"></div></div>
+                <div class="bat-tip"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── XMB Layout ── -->
+    <div class="xmb-layout">
+        <!-- Category horizontal rail -->
+        <div class="xmb-categories" role="navigation" aria-label="Main menu">
+
+            <!-- User / Profile -->
+            <div class="xmb-category" role="button" tabindex="0" aria-label="Profile" data-cat="user">
+                <div class="category-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                    </svg>
                 </div>
-                <a href="https://mail.google.com/mail/?view=cm&to=andrejoseruiz2003@gmail.com" target="_blank" rel="noopener noreferrer" class="email-btn"><span>send me an email →</span></a>
+                <span class="category-label">Profile</span>
             </div>
+
+            <!-- About -->
+            <div class="xmb-category" role="button" tabindex="0" aria-label="About" data-cat="about">
+                <div class="category-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                </div>
+                <span class="category-label">About</span>
+            </div>
+
+            <!-- Skills -->
+            <div class="xmb-category" role="button" tabindex="0" aria-label="Skills" data-cat="skills">
+                <div class="category-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                    </svg>
+                </div>
+                <span class="category-label">Skills</span>
+            </div>
+
+            <!-- Web Projects -->
+            <div class="xmb-category" role="button" tabindex="0" aria-label="Projects" data-cat="projects">
+                <div class="category-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20 6h-2.18c.07-.44.18-.86.18-1.3C18 2.12 15.88 0 13.3 0c-1.3 0-2.48.54-3.3 1.41L9 2.5 7.97 1.41C7.15.54 6 0 4.7 0 2.12 0 0 2.12 0 4.7c0 .44.11.86.18 1.3H0v2h20v-2zM4.7 4C3.64 4 3 3.36 3 2.7 3 2.12 3.5 1.5 4.7 1.5c.46 0 .94.2 1.3.55L7.35 3.3C6.8 3.76 5.78 4 4.7 4zm8.6 0c-1.08 0-2.1-.24-2.65-.7l1.35-1.25c.36-.35.84-.55 1.3-.55 1.2 0 1.7.62 1.7 1.2C15 3.36 14.36 4 13.3 4zM0 8v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8H0zm10 11H2v-2h8v2zm0-4H2v-2h8v2zm8 4h-6v-2h6v2zm0-4h-6v-2h6v2z"/>
+                    </svg>
+                </div>
+                <span class="category-label">Projects</span>
+            </div>
+
+            <!-- Video -->
+            <div class="xmb-category" role="button" tabindex="0" aria-label="Video Editing" data-cat="video">
+                <div class="category-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                    </svg>
+                </div>
+                <span class="category-label">Videos</span>
+            </div>
+
+            <!-- Contact -->
+            <div class="xmb-category" role="button" tabindex="0" aria-label="Contact" data-cat="contact">
+                <div class="category-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </div>
+                <span class="category-label">Contact</span>
+            </div>
+
         </div>
-    </section>
+        <!-- submenus are injected by JS directly into the active .xmb-category -->
+    </div>
 
-    <footer class="footer">
-        <p>&copy; 2026 Andre Jose C. Ruiz. All rights reserved.</p>
-    </footer>
+    <!-- ── Detail Panel ── -->
+    <aside class="xmb-detail" aria-live="polite" aria-label="Details">
+        <button class="detail-close-btn" id="detailCloseBtn" aria-label="Close panel">✕</button>
+        <div class="detail-body"></div>
+        <div class="detail-action"></div>
+    </aside>
 
+    <!-- ── D-Pad Hint ── -->
+    <div class="xmb-dpad-hint" aria-hidden="true">
+        <div class="dpad-btn">
+            <div class="dpad-key">◀</div>
+            <div class="dpad-key">▶</div>
+            <span>navigate</span>
+        </div>
+        <div class="dpad-btn">
+            <div class="dpad-key">▲</div>
+            <div class="dpad-key">▼</div>
+            <span>select</span>
+        </div>
+        <div class="dpad-btn">
+            <div class="ps-btn cross">✕</div>
+            <span>open</span>
+        </div>
+        <div class="dpad-btn">
+            <div class="ps-btn circle">○</div>
+            <span>back</span>
+        </div>
+    </div>
 
+    <!-- ── Page Label ── -->
+    <div class="xmb-page-label" aria-hidden="true">
+        <div class="page-label-text">kechibiii.github.io · PSP XMB</div>
+    </div>
 
     <script src="main.js"></script>
-    <script>
-        // Hamburger menu
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        hamburger.addEventListener('click', () => {
-            const open = navLinks.classList.toggle('open');
-            hamburger.classList.toggle('open', open);
-            hamburger.setAttribute('aria-expanded', open);
-        });
-    </script>
 </body>
 </html>
